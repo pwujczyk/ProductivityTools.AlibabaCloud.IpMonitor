@@ -1,3 +1,5 @@
+properties([pipelineTriggers([githubPush()])])
+
 pipeline {
     agent any
 
@@ -15,7 +17,7 @@ pipeline {
         }
 		stage('build') {
             steps {
-                bat(script: "dotnet publish ProductivityTools.AlibabaCloud.IpMonitor.sln -c Release ", returnStdout: true)
+                bat(script: "dotnet build ProductivityTools.AlibabaCloud.IpMonitor.sln -c Release ", returnStdout: true)
             }
         }
 		
