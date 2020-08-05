@@ -13,8 +13,10 @@ pipeline {
                 url: 'https://github.com/pwujczyk/ProductivityTools.AlibabaCloud.IpMonitor'
             }
         }
-        stage('byebye') {
+        stage('byebye'){
+			steps {
                 echo 'byebye'
             }
         }
     }
+}
