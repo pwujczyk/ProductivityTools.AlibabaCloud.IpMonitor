@@ -17,7 +17,7 @@ pipeline {
             }
         }
 		
-		stage('build') {
+		stage('restore') {
             steps {
                 bat(script: "C:\bin\nuget.exe restore", returnStdout: true)
             }
