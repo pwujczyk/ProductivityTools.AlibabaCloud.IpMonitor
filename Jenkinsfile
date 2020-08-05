@@ -38,7 +38,7 @@ pipeline {
                 powershell('Install-Module -Name ProductivityTools.PSInstallService')
             }
         }	
-		stage('InstallPSModule') {
+		stage('InstallService') {
             steps {
                 powershell('Install-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
             }
