@@ -15,5 +15,10 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor
         {
             InitializeComponent();
         }
+
+        private void PTIPMonitorProcessInstaller_AfterInstall(object sender, InstallEventArgs e)
+        {
+
+        }
     }
 }

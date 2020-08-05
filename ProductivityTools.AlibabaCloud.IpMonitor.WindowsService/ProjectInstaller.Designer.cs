@@ -35,10 +35,13 @@
             // 
             this.PTIPMonitorProcessInstaller.Password = null;
             this.PTIPMonitorProcessInstaller.Username = null;
+            this.PTIPMonitorProcessInstaller.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.PTIPMonitorProcessInstaller_AfterInstall);
             // 
             // PTIPMonitorServiceInstaller
             // 
+            this.PTIPMonitorServiceInstaller.DisplayName = "ProductivityTools.Alibaba.IpMonitor";
             this.PTIPMonitorServiceInstaller.ServiceName = "ProductivityTools.Alibaba.IpMonitor";
+            this.PTIPMonitorServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
             // 
