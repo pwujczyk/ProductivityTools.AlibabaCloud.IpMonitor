@@ -22,7 +22,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor
 
         protected override void OnStart(string[] args)
         {
-
             IConfigurationRoot configuration = new ConfigurationBuilder()
               .AddMasterConfiguration(force:true)
               .Build();

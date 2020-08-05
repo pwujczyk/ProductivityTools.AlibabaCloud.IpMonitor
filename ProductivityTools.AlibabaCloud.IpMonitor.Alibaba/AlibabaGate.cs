@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProductivityTools.MasterConfiguration;
 using static Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsResponse;
 
 namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba

@@ -60,6 +60,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.6\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="ProductivityTools.MasterConfiguration, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ProductivityTools.MasterConfiguration.2.0.0\lib\netstandard2.0\ProductivityTools.MasterConfiguration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -110,10 +113,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ProductivityTools.MasterConfiguration\ProductivityTools.MasterConfiguration\ProductivityTools.MasterConfiguration.csproj">
-      <Project>{fa23639e-6076-4cdb-9024-2a254337ab83}</Project>
-      <Name>ProductivityTools.MasterConfiguration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ProductivityTools.AlibabaCloud.IpMonitor.App\ProductivityTools.AlibabaCloud.IpMonitor.App.csproj">
       <Project>{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}</Project>
       <Name>ProductivityTools.AlibabaCloud.IpMonitor.App</Name>

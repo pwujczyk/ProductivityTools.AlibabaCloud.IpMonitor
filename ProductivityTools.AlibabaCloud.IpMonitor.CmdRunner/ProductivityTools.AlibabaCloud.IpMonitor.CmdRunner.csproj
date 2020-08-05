@@ -104,10 +104,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ProductivityTools.MasterConfiguration\ProductivityTools.MasterConfiguration\ProductivityTools.MasterConfiguration.csproj">
-      <Project>{fa23639e-6076-4cdb-9024-2a254337ab83}</Project>
-      <Name>ProductivityTools.MasterConfiguration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ProductivityTools.AlibabaCloud.IpMonitor\ProductivityTools.AlibabaCloud.IpMonitor.WindowService.csproj">
       <Project>{f86d3dd7-5ec9-4999-b587-1b14c9617959}</Project>
       <Name>ProductivityTools.AlibabaCloud.IpMonitor.WindowService</Name>
