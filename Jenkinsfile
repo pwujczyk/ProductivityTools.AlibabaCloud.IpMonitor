@@ -35,7 +35,7 @@ pipeline {
         }	
 		stage('getprocess') {
             steps {
-                bat('get-process')
+                powershell('get-process')
             }
         }				
         stage('byebye'){
