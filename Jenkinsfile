@@ -28,7 +28,16 @@ pipeline {
                 bat(script: "dotnet build ProductivityTools.AlibabaCloud.IpMonitor.sln -c Release ", returnStdout: true)
             }
         }
-		
+		stage('CopyFiles') {
+            steps {
+                bat('xcopy ".\\ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\\bin\\Debug" "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\" /O /X /E /H /K')
+            }
+        }	
+		stage('getprocess') {
+            steps {
+                bat('get-process')
+            }
+        }				
         stage('byebye'){
 			steps {
                 echo 'byebye'

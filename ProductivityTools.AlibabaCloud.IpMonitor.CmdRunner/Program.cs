@@ -11,7 +11,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner
     {
         static void Main(string[] args)
         {
-
             Console.WriteLine("Hello from CmdRunner");
             var service = new Service1();
             service.OnDebug();

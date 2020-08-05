@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.WindowService", "ProductivityTools.AlibabaCloud.IpMonitor\ProductivityTools.AlibabaCloud.IpMonitor.WindowService.csproj", "{F86D3DD7-5EC9-4999-B587-1B14C9617959}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner", "ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner\ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner.csproj", "{E0309B05-B9E5-423B-9A8E-B010D5573B1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.Monitor", "ProductivityTools.AlibabaCloud.IpMonitor.Monitor\ProductivityTools.AlibabaCloud.IpMonitor.Monitor.csproj", "{88FEC171-BD83-4215-ADFA-4FFBB8C6EE4A}"
@@ -13,16 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.App", "ProductivityTools.AlibabaCloud.IpMonitor.App\ProductivityTools.AlibabaCloud.IpMonitor.App.csproj", "{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.WindowService", "ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\ProductivityTools.AlibabaCloud.IpMonitor.WindowService.csproj", "{F86D3DD7-5EC9-4999-B587-1B14C9617959}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
