@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner", "ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner\ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner.csproj", "{E0309B05-B9E5-423B-9A8E-B010D5573B1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.Monitor", "ProductivityTools.AlibabaCloud.IpMonitor.Monitor\ProductivityTools.AlibabaCloud.IpMonitor.Monitor.csproj", "{88FEC171-BD83-4215-ADFA-4FFBB8C6EE4A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.Alibaba", "ProductivityTools.AlibabaCloud.IpMonitor.Alibaba\ProductivityTools.AlibabaCloud.IpMonitor.Alibaba.csproj", "{C1005382-3857-42A3-82C1-38F56BACFB17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.App", "ProductivityTools.AlibabaCloud.IpMonitor.App\ProductivityTools.AlibabaCloud.IpMonitor.App.csproj", "{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}"
@@ -23,10 +21,6 @@ Global
 		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88FEC171-BD83-4215-ADFA-4FFBB8C6EE4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88FEC171-BD83-4215-ADFA-4FFBB8C6EE4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88FEC171-BD83-4215-ADFA-4FFBB8C6EE4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88FEC171-BD83-4215-ADFA-4FFBB8C6EE4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C1005382-3857-42A3-82C1-38F56BACFB17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1005382-3857-42A3-82C1-38F56BACFB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1005382-3857-42A3-82C1-38F56BACFB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
