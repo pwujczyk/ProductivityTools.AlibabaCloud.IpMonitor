@@ -110,10 +110,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ProductivityTools.MasterConfiguration\ProductivityTools.MasterConfiguration\ProductivityTools.MasterConfiguration.csproj">
+      <Project>{fa23639e-6076-4cdb-9024-2a254337ab83}</Project>
+      <Name>ProductivityTools.MasterConfiguration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProductivityTools.AlibabaCloud.IpMonitor.App\ProductivityTools.AlibabaCloud.IpMonitor.App.csproj">
       <Project>{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}</Project>
       <Name>ProductivityTools.AlibabaCloud.IpMonitor.App</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

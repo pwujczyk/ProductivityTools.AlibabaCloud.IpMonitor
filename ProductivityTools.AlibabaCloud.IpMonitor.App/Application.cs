@@ -1,4 +1,5 @@
-﻿using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
+﻿using Microsoft.Extensions.Configuration;
+using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         private string LastPublicAddress = string.Empty;
         private string Domain = "productivitytools.tech";
         private DateTime LastMonitorEmailSent = DateTime.MinValue;
+        private readonly IConfigurationRoot Configuration;
+
+        public Application(IConfigurationRoot configuration)
+        {
+            this.Configuration = configuration;
+        }
 
         public void Run()
         {
@@ -33,6 +40,23 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             }
         }
 
+        AlibabaGate alibabaGate;
+        AlibabaGate AlibabaGate
+        {
+            get
+            {
+                if (alibabaGate==null)
+                {
+                    string region = Configuration["Region"];
+                    string accessKeyId = Configuration["AccessKeyId"];
+                    string accessKeySecret = Configuration["AccessKeySecret"];
+
+                    alibabaGate = new AlibabaGate(region, accessKeyId, accessKeySecret);
+                }
+                return alibabaGate;
+            }
+        }
+
         private void InitialCheck()
         {
             InitialCheck("identityserver");
@@ -43,8 +67,9 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         {
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
             Console.WriteLine(currentExternalIp);
-            var alibabaGate = new AlibabaGate();
-            string currentAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
+
+
+            string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
             if (currentExternalIp == currentAlibabaConfiguration)
             {
                 SendEmail($"Current IP address ({currentExternalIp}) is the same as set up in Alibaba ({currentAlibabaConfiguration}), no action");
@@ -70,8 +95,8 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
             if (LastPublicAddress != currentExternalIp)
             {
-                var alibabaGate = new AlibabaGate();
-                alibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
+
+                AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
                 var currentAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
 
                 SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress}, new public address{currentExternalIp}. Value changed to: {currentAlibabaConfiguration}"));
@@ -83,7 +108,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
                     || this.LastMonitorEmailSent == DateTime.MinValue)
                 {
                     LastMonitorEmailSent = DateTime.Now;
-                    
+
                     SendEmail($"No changes current ip:{currentExternalIp}");
                 }
             }

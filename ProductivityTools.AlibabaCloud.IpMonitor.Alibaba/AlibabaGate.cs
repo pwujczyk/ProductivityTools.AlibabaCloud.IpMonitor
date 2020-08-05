@@ -13,15 +13,26 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
 {
     public class AlibabaGate
     {
-        private string Region
-        {
-            get
-            {
+        private readonly string Region;
+        private readonly string AccessKeyId;
+        private readonly string AccessKeySecret;
 
-                var r = string.Empty;
-                return r;
-            }
+        public AlibabaGate(string region, string accessKeyId, string accessKeySecret)
+        {
+            this.Region = region;
+            this.AccessKeyId = accessKeyId;
+            this.AccessKeySecret = accessKeySecret;
         }
+
+        //private string Region
+        //{
+        //    get
+        //    {
+
+        //        var r = string.Empty;
+        //        return r;
+        //    }
+        //}
 
         IClientProfile ClientProfile
         {
@@ -30,8 +41,8 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
 
                 IClientProfile clientProfile = DefaultProfile.GetProfile(
                     Region, // region ID
-                    " ", //  AccessKey ID of RAM account
-                    " "); // AccessKey Secret of RAM account
+                    AccessKeyId, //  AccessKey ID of RAM account
+                    AccessKeySecret); // AccessKey Secret of RAM account
 
                 return clientProfile;
             }

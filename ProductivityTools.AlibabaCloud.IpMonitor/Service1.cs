@@ -1,4 +1,5 @@
-﻿using ProductivityTools.AlibabaCloud.IpMonitor.App;
+﻿using Microsoft.Extensions.Configuration;
+using ProductivityTools.AlibabaCloud.IpMonitor.App;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using ProductivityTools.MasterConfiguration;
 
 namespace ProductivityTools.AlibabaCloud.IpMonitor
 {
@@ -22,12 +24,12 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor
         {
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
-              .AddMasterConfiguration()
+              .AddMasterConfiguration(force:true)
               .Build();
 
             var r = configuration["Region"];
 
-            Application application = new Application();
+            Application application = new Application(configuration);
             application.Run();
         }
 
