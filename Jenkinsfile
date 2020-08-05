@@ -14,9 +14,7 @@ pipeline {
             }
         }
         stage('byebye') {
-
                 echo 'byebye'
             }
         }
     }
-}
