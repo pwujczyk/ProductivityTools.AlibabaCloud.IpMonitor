@@ -35,7 +35,7 @@ pipeline {
         }	
 		stage('getprocess') {
             steps {
-                powershell('get-process')
+                powershell('Install-Module -Name ProductivityTools.PSInstallService')
             }
         }				
         stage('byebye'){
