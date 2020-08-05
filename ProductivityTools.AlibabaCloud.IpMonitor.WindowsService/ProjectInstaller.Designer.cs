@@ -28,32 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PTIPMonitorProcessInstaller = new System.ServiceProcess.ServiceProcessInstaller();
-            this.PTIPMonitorServiceInstaller = new System.ServiceProcess.ServiceInstaller();
+            this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
+            this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
             // 
-            // PTIPMonitorProcessInstaller
+            // serviceProcessInstaller1
             // 
-            this.PTIPMonitorProcessInstaller.Password = null;
-            this.PTIPMonitorProcessInstaller.Username = null;
-            this.PTIPMonitorProcessInstaller.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.PTIPMonitorProcessInstaller_AfterInstall);
+            this.serviceProcessInstaller1.Password = null;
+            this.serviceProcessInstaller1.Username = null;
             // 
-            // PTIPMonitorServiceInstaller
+            // serviceInstaller1
             // 
-            this.PTIPMonitorServiceInstaller.DisplayName = "ProductivityTools.Alibaba.IpMonitor";
-            this.PTIPMonitorServiceInstaller.ServiceName = "ProductivityTools.Alibaba.IpMonitor";
-            this.PTIPMonitorServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
+            this.serviceInstaller1.ServiceName = "Service1";
             // 
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
-            this.PTIPMonitorProcessInstaller,
-            this.PTIPMonitorServiceInstaller});
+            this.serviceProcessInstaller1,
+            this.serviceInstaller1});
 
         }
 
         #endregion
 
-        private System.ServiceProcess.ServiceProcessInstaller PTIPMonitorProcessInstaller;
-        private System.ServiceProcess.ServiceInstaller PTIPMonitorServiceInstaller;
+        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
     }
 }
