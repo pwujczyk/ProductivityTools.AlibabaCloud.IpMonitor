@@ -33,11 +33,16 @@ pipeline {
                 bat('xcopy ".\\ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\\bin\\Release" "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\" /O /X /E /H /K /Y')
             }
         }	
-		stage('getprocess') {
+		stage('InstallPSModule') {
             steps {
                 powershell('Install-Module -Name ProductivityTools.PSInstallService')
             }
-        }				
+        }	
+		stage('InstallPSModule') {
+            steps {
+                powershell('Install-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
+            }
+        }			
         stage('byebye'){
 			steps {
                 echo 'byebye'
