@@ -9,6 +9,11 @@ pipeline {
                 echo 'hello'
             }
         }
+		stage('UnInstallService') {
+            steps {
+                powershell('UnInstall-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
+            }
+        }	
 		stage('deleteWorkspace') {
             steps {
                 deleteDir()
@@ -38,11 +43,7 @@ pipeline {
                 powershell('Install-Module -Name ProductivityTools.PSInstallService')
             }
         }	
-		stage('UnInstallService') {
-            steps {
-                powershell('UnInstall-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
-            }
-        }	
+
 		stage('CopyFiles') {
             steps {
                 bat('xcopy ".\\ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\\bin\\Debug" "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\" /O /X /E /H /K /Y')
