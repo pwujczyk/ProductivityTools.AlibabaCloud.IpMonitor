@@ -67,10 +67,10 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
             DescribeDomainRecords_Record x = null;
             try
             {
-                var d = new DescribeDomainRecordsRequest();
-                d.DomainName = domain;
-                DefaultAcsClient.DoAction(d, ClientProfile);
-                var response3 = DefaultAcsClient.GetAcsResponse(d);
+                var request = new DescribeDomainRecordsRequest();
+                request.DomainName = domain;
+                DefaultAcsClient.DoAction(request, ClientProfile);
+                var response3 = DefaultAcsClient.GetAcsResponse(request);
                 x = response3.DomainRecords.SingleOrDefault(d1 => d1.RR == host);
                 return x;
             }
