@@ -28,29 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
-            this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
+            this.PTServiceProcessInstaller = new System.ServiceProcess.ServiceProcessInstaller();
+            this.PTServiceInstaller = new System.ServiceProcess.ServiceInstaller();
             // 
-            // serviceProcessInstaller1
+            // PTServiceProcessInstaller
             // 
-            this.serviceProcessInstaller1.Password = null;
-            this.serviceProcessInstaller1.Username = null;
+            this.PTServiceProcessInstaller.Password = null;
+            this.PTServiceProcessInstaller.Username = null;
             // 
-            // serviceInstaller1
+            // PTServiceInstaller
             // 
-            this.serviceInstaller1.ServiceName = "ProductivityTools.Alibaba.IpMonitor";
+            this.PTServiceInstaller.DisplayName = "ProductivityTools.Alibaba";
+            this.PTServiceInstaller.ServiceName = "ProductivityTools.Alibaba";
+            this.PTServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
-            this.serviceProcessInstaller1,
-            this.serviceInstaller1});
+            this.PTServiceProcessInstaller,
+            this.PTServiceInstaller});
 
         }
 
         #endregion
 
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        private System.ServiceProcess.ServiceProcessInstaller PTServiceProcessInstaller;
+        private System.ServiceProcess.ServiceInstaller PTServiceInstaller;
     }
 }
