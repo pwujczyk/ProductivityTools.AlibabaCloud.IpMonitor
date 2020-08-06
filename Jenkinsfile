@@ -54,6 +54,11 @@ pipeline {
             steps {
                 powershell('Install-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
             }
+        }		
+		stage('StartService') {
+            steps {
+                powershell('Start-Service ProductivityTools.AlibabaCloud')
+            }
         }			
         stage('byebye'){
 			steps {
