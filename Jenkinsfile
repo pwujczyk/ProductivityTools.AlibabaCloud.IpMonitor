@@ -33,6 +33,12 @@ pipeline {
                 bat(script: """ "C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\MsBuild.exe" .\\ProductivityTools.AlibabaCloud.IpMonitor.sln""", returnStdout: true)
             }
         }
+		
+		stage('UnInstallService') {
+            steps {
+                powershell('UnInstall-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
+            }
+        }	
 		stage('CopyFiles') {
             steps {
                 bat('xcopy ".\\ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\\bin\\Debug" "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\" /O /X /E /H /K /Y')
@@ -44,11 +50,7 @@ pipeline {
             }
         }	
 		
-		stage('UnInstallService') {
-            steps {
-                powershell('UnInstall-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
-            }
-        }	
+
 		
 		stage('InstallService') {
             steps {
