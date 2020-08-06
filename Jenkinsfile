@@ -30,7 +30,7 @@ pipeline {
 		
 		stage('build') {
             steps {
-                bat(script: "'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\MsBuild.exe' ProductivityTools.AlibabaCloud.IpMonitor.sln", returnStdout: true)
+                bat(script: "'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\MsBuild.exe' .\\ProductivityTools.AlibabaCloud.IpMonitor.sln", returnStdout: true)
             }
         }
 		stage('CopyFiles') {
