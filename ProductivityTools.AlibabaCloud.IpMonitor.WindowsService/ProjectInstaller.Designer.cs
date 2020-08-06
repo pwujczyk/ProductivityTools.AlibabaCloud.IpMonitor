@@ -33,6 +33,7 @@
             // 
             // PTServiceProcessInstaller
             // 
+            this.PTServiceProcessInstaller.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
             this.PTServiceProcessInstaller.Password = null;
             this.PTServiceProcessInstaller.Username = null;
             // 
