@@ -10,6 +10,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using ProductivityTools.MasterConfiguration;
+using System.Threading;
 
 namespace ProductivityTools.AlibabaCloud.IpMonitor
 {
@@ -22,9 +23,24 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor
 
         protected override void OnStart(string[] args)
         {
+            ThreadStart start = new ThreadStart(FaxWorker); // FaxWorker is where the work gets done
+            Thread faxWorkerThread = new Thread(start);
+
+            // set flag to indicate worker thread is active
+           // serviceStarted = true;
+
+            // start threads
+            faxWorkerThread.Start();
+
+
+           
+        }
+
+        private void FaxWorker()
+        {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-              .AddMasterConfiguration(force:true)
-              .Build();
+             .AddMasterConfiguration(force: true)
+             .Build();
 
             var r = configuration["Region"];
 
