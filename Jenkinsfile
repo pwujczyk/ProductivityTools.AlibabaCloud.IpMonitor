@@ -9,6 +9,11 @@ pipeline {
                 echo 'hello'
             }
         }
+		stage('deleteWorkspace') {
+            steps {
+                deleteDir()
+            }
+        }
 		
         stage('clone') {
             steps {
