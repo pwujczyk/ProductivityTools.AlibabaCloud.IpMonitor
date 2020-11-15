@@ -12,7 +12,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
     {
         public static string GetPublicIpAddress()
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://ifconfig.me");
+            var request = (HttpWebRequest)WebRequest.Create("http://ifconfig.me/ip");
 
             request.UserAgent = "curl"; // this will tell the server to return the information as if the request was made by the linux "curl" command
 
