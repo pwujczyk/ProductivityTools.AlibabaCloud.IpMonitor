@@ -14,6 +14,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         private string LastPublicAddress = string.Empty;
         private string Domain = "productivitytools.tech";
         private DateTime LastMonitorEmailSent = DateTime.MinValue;
+        private int ExceptionsCount = 0;
         private readonly IConfigurationRoot Configuration;
 
         public Application(IConfigurationRoot configuration)
@@ -30,12 +31,18 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
                 try
                 {
                     Check();
+                    ExceptionsCount = 0;
                 }
                 catch (Exception ex)
                 {
+                    ExceptionsCount++;
                     Console.WriteLine(ex.ToString());
                     SendEmail(string.Format($"Some exception was throw{ex.ToString()}"));
-                    Thread.Sleep(TimeSpan.FromHours(1));
+                    Thread.Sleep(TimeSpan.FromMinutes(1));
+                    if (ExceptionsCount > 10)
+                    {
+                        Thread.Sleep(TimeSpan.FromHours(1));
+                    }
                 }
             }
         }
