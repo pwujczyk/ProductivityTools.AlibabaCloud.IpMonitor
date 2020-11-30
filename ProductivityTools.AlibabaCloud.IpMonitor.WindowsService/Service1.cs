@@ -23,20 +23,20 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor
 
         protected override void OnStart(string[] args)
         {
-            ThreadStart start = new ThreadStart(FaxWorker); // FaxWorker is where the work gets done
-            Thread faxWorkerThread = new Thread(start);
+            ThreadStart start = new ThreadStart(AlibabaWorker); // FaxWorker is where the work gets done
+            Thread alibabaThread = new Thread(start);
 
             // set flag to indicate worker thread is active
            // serviceStarted = true;
 
             // start threads
-            faxWorkerThread.Start();
+            alibabaThread.Start();
 
 
            
         }
 
-        private void FaxWorker()
+        private void AlibabaWorker()
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
              .AddMasterConfiguration(force: true)

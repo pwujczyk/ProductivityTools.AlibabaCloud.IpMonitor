@@ -2,6 +2,7 @@
 using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -66,8 +67,17 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         private void InitialCheck()
         {
-            InitialCheck("identityserver");
-            InitialCheck("meetings");
+            var valuesSection = this.Configuration.GetSection("Hosts");
+            var itemArray = valuesSection.AsEnumerable();
+            foreach(var item in itemArray)
+            {
+                if (!string.IsNullOrEmpty(item.Value))
+                {
+                    InitialCheck(item.Value);
+                }
+            }
+            //InitialCheck("identityserver");
+            //InitialCheck("meetings");
         }
 
         private void InitialCheck(string host)
