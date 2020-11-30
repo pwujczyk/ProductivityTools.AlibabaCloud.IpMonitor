@@ -89,14 +89,14 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
             if (currentExternalIp == currentAlibabaConfiguration)
             {
-                SendEmail($"Current IP address ({currentExternalIp}) for host {host} is the same as set up in Alibaba ({currentAlibabaConfiguration}), no action.");
+                SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' is the same as set up in Alibaba ({currentAlibabaConfiguration}), no action.");
                 this.LastPublicAddress = currentExternalIp;
             }
             else
             {
                 alibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
                 var updatedValue = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-                SendEmail($"Current IP address ({currentExternalIp}) for host {host}  was different than in Alibaba({currentAlibabaConfiguration}).Address updated to {updatedValue}.");
+                SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' was different than in Alibaba({currentAlibabaConfiguration}).Address updated to {updatedValue}.");
             }
         }
 
