@@ -12,7 +12,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 {
     public class Application
     {
-        private string LastPublicAddress = string.Empty;
+        private Dictionary<string, string> LastPublicAddress = new Dictionary<string, string>();
         private string Domain = "productivitytools.tech";
         private DateTime LastMonitorEmailSent = DateTime.MinValue;
         private int ExceptionsCount = 0;
@@ -25,7 +25,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         public void Run()
         {
-            InitialCheck();
+            Check();
 
             while (true)
             {
@@ -53,7 +53,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         {
             get
             {
-                if (alibabaGate==null)
+                if (alibabaGate == null)
                 {
                     string region = Configuration["Region"];
                     string accessKeyId = Configuration["AccessKeyId"];
@@ -65,59 +65,56 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             }
         }
 
-        private void InitialCheck()
+        private void Check()
         {
             var valuesSection = this.Configuration.GetSection("Hosts");
             var itemArray = valuesSection.AsEnumerable();
-            foreach(var item in itemArray)
+            foreach (var item in itemArray)
             {
                 if (!string.IsNullOrEmpty(item.Value))
                 {
-                    InitialCheck(item.Value);
+                    Check(item.Value);
                 }
             }
-            //InitialCheck("identityserver");
-            //InitialCheck("meetings");
+            Thread.Sleep(TimeSpan.FromMinutes(1));
         }
 
-        private void InitialCheck(string host)
-        {
-            var currentExternalIp = Ifconfig.GetPublicIpAddress();
-            Console.WriteLine(currentExternalIp);
+        //private void InitialCheck(string host)
+        //{
+        //    var currentExternalIp = Ifconfig.GetPublicIpAddress();
+        //    Console.WriteLine(currentExternalIp);
 
 
-            string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
-            if (currentExternalIp == currentAlibabaConfiguration)
-            {
-                SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' is the same as set up in Alibaba ({currentAlibabaConfiguration}), no action.");
-                this.LastPublicAddress = currentExternalIp;
-            }
-            else
-            {
-                alibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
-                var updatedValue = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-                SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' was different than in Alibaba({currentAlibabaConfiguration}).Address updated to {updatedValue}.");
-            }
-        }
-
-        private void Check()
-        {
-            Check("identityserver");
-            Check("meetings");
-        }
+        //    string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
+        //    if (currentExternalIp == currentAlibabaConfiguration)
+        //    {
+        //        SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' is the same as set up in Alibaba ({currentAlibabaConfiguration}), no action.");
+        //        this.LastPublicAddress = currentExternalIp;
+        //    }
+        //    else
+        //    {
+        //        alibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
+        //        var updatedValue = alibabaGate.GetcurrentIpConfiguration(Domain, host);
+        //        SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' was different than in Alibaba({currentAlibabaConfiguration}).Address updated to {updatedValue}.");
+        //    }
+        //}
 
         private void Check(string host)
         {
-            Console.WriteLine($"Perform check. Last remember Ip:{LastPublicAddress}");
+            Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host)? LastPublicAddress[host] : string.Empty )}");
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
-            if (LastPublicAddress != currentExternalIp)
+            if (LastPublicAddress.ContainsKey(host) == false || LastPublicAddress[host] != currentExternalIp)
             {
+                string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
+                if (currentAlibabaConfiguration != currentExternalIp)
+                {
+                    AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
+                    //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
 
-                AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
-                var currentAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-
-                SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress}, new public address{currentExternalIp}. Value changed to: {currentAlibabaConfiguration}"));
-                this.LastPublicAddress = currentExternalIp;
+                    SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress}, new public address{currentExternalIp}. Value changed to: {currentAlibabaConfiguration}"));
+                    this.LastPublicAddress[host] = currentExternalIp;
+                }
+                this.LastPublicAddress[host] = currentExternalIp;
             }
             else
             {
@@ -131,7 +128,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             }
 
             Console.WriteLine($"Waiting 1 minute:{ DateTime.Now}");
-            Thread.Sleep(TimeSpan.FromMinutes(1));
         }
 
         //pw: to be changed sent na send
