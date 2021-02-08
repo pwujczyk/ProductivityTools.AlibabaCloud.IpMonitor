@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('hello1') {
             steps {
-                echo 'hello'
+                echo 'hello1'
             }
         }
 		stage('UnInstallService') {
