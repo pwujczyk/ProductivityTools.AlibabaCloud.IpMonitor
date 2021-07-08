@@ -131,10 +131,10 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         }
 
         //pw: to be changed sent na send
-        private static void SendEmail(string body)
+        private void SendEmail(string body)
         {
             Console.WriteLine(body);
-            SentEmailGmail.Gmail.Send("pwujczyk@gmail.com", "Hexagones1", "pwujczyk@hotmail.com", "DNSMonitor", body);
+            SentEmailGmail.Gmail.Send("pwujczyk@gmail.com", Configuration["GmailPassword"], "pwujczyk@hotmail.com", "DNSMonitor", body);
         }
     }
 }
