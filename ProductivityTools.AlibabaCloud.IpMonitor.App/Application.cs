@@ -108,6 +108,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         private void Check(string host)
         {
+            Log("Check");
             EventLog.WriteEntry("Alibaba cloud", "Writing warning to event log.",EventLogEntryType.Error);
             Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host)? LastPublicAddress[host] : string.Empty )}");
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
