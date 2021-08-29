@@ -102,14 +102,13 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         private void Log(string log)
         {
-            EventLog.WriteEntry("AlibabaCloud.IpMonitor", log);
+            EventLog.WriteEntry("AlibabaCloud.IpMonitor", log, EventLogEntryType.Information);
             Console.WriteLine(log);
         }
 
         private void Check(string host)
         {
-            Log("Check");
-            EventLog.WriteEntry("Alibaba cloud", "Writing warning to event log.",EventLogEntryType.Error);
+            Log("Check " + host);
             Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host)? LastPublicAddress[host] : string.Empty )}");
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
             if (LastPublicAddress.ContainsKey(host) == false || LastPublicAddress[host] != currentExternalIp)
