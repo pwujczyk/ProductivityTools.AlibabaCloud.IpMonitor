@@ -3,6 +3,7 @@ using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -101,6 +102,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         private void Check(string host)
         {
+            EventLog.WriteEntry("Alibaba cloud", "Writing warning to event log.",EventLogEntryType.Error);
             Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host)? LastPublicAddress[host] : string.Empty )}");
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
             if (LastPublicAddress.ContainsKey(host) == false || LastPublicAddress[host] != currentExternalIp)
