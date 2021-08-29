@@ -113,12 +113,13 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
             if (LastPublicAddress.ContainsKey(host) == false || LastPublicAddress[host] != currentExternalIp)
             {
+                Log($"It seems that for host {host} address is not up to date");
                 string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
                 if (currentAlibabaConfiguration != currentExternalIp)
                 {
                     AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
                     //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-
+                    Log($"I will send address that I updated the ip in alibaba for host {host}");
                     SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress[host]}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
                     this.LastPublicAddress[host] = currentExternalIp;
                 }
@@ -135,7 +136,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
                 }
             }
 
-            Console.WriteLine($"Waiting 1 minute:{ DateTime.Now}");
+            Log($"Waiting 1 minute:{ DateTime.Now} for host {host}");
         }
 
         //pw: to be changed sent na send
