@@ -100,6 +100,12 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         //    }
         //}
 
+        private void Log(string log)
+        {
+            EventLog.WriteEntry("AlibabaCloud.IpMonitor", log);
+            Console.WriteLine(log);
+        }
+
         private void Check(string host)
         {
             EventLog.WriteEntry("Alibaba cloud", "Writing warning to event log.",EventLogEntryType.Error);
