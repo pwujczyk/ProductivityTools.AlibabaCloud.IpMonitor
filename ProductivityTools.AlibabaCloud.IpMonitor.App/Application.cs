@@ -120,7 +120,14 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
                     AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
                     //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
                     Log($"I will send address that I updated the ip in alibaba for host {host}");
-                    SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress[host]}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
+                    if (LastPublicAddress.ContainsKey(host))
+                    {
+                        SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress[host]}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
+                    }
+                    else
+                    {
+                        SendEmail(string.Format($"First address setup for hsot {host}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
+                    }
                     this.LastPublicAddress[host] = currentExternalIp;
                 }
                 this.LastPublicAddress[host] = currentExternalIp;
