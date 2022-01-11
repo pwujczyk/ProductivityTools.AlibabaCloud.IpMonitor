@@ -39,7 +39,14 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
                 {
                     ExceptionsCount++;
                     Console.WriteLine(ex.ToString());
-                    SendEmail(string.Format($"Some exception was throw{ex.ToString()}"));
+                    try
+                    {
+                        SendEmail(string.Format($"Some exception was throw{ex.ToString()}"));
+                    }
+                    catch (Exception)
+                    {
+
+                    }                    
                     Thread.Sleep(TimeSpan.FromMinutes(1));
                     if (ExceptionsCount > 10)
                     {
@@ -150,7 +157,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         private void SendEmail(string body)
         {
             Console.WriteLine(body);
-            SentEmailGmail.Gmail.Send("pwujczyk@gmail.com", Configuration["GmailPassword"], "pwujczyk@hotmail.com", "DNSMonitor", body);
+            SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@hotmail.com", "DNSMonitor", body);
         }
     }
 }
