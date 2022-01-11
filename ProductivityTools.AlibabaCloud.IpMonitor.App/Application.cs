@@ -39,14 +39,8 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
                 {
                     ExceptionsCount++;
                     Console.WriteLine(ex.ToString());
-                    try
-                    {
-                        SendEmail(string.Format($"Some exception was throw{ex.ToString()}"));
-                    }
-                    catch (Exception)
-                    {
 
-                    }                    
+                    SendEmail(string.Format($"Some exception was throw{ex.ToString()}"));
                     Thread.Sleep(TimeSpan.FromMinutes(1));
                     if (ExceptionsCount > 10)
                     {
@@ -116,7 +110,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         private void Check(string host)
         {
             Log("Check " + host);
-            Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host)? LastPublicAddress[host] : string.Empty )}");
+            Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host) ? LastPublicAddress[host] : string.Empty)}");
             var currentExternalIp = Ifconfig.GetPublicIpAddress();
             if (LastPublicAddress.ContainsKey(host) == false || LastPublicAddress[host] != currentExternalIp)
             {
@@ -156,8 +150,17 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         //pw: to be changed sent na send
         private void SendEmail(string body)
         {
-            Console.WriteLine(body);
-            SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@hotmail.com", "DNSMonitor", body);
+            EventLog.WriteEntry("IpMonitoror", "Try to send email")
+            try
+            {
+                Console.WriteLine(body);
+                SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@hotmail.com", "DNSMonitor", body);
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry("IpMonitoror", ex.Message);
+            }
+
         }
     }
 }
