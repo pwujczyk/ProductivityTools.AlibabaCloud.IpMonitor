@@ -150,7 +150,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
         //pw: to be changed sent na send
         private void SendEmail(string body)
         {
-            EventLog.WriteEntry("IpMonitoror", "Try to send email");
+            Log("Try to send email");
             try
             {
                 Console.WriteLine(body);
@@ -158,7 +158,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             }
             catch (Exception ex)
             {
-                EventLog.WriteEntry("IpMonitoror", ex.Message);
+                Log(ex.Message);
             }
 
         }
