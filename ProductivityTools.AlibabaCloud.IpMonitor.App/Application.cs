@@ -14,7 +14,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
     public class Application
     {
         private Dictionary<string, string> LastPublicAddress = new Dictionary<string, string>();
-        private string Domain = "productivitytools.tech";
+        private string Domain = "productivitytools.top";
         private DateTime LastMonitorEmailSent = DateTime.MinValue;
         private int ExceptionsCount = 0;
         private readonly IConfigurationRoot Configuration;
