@@ -68,6 +68,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
             try
             {
                 var request = new DescribeDomainRecordsRequest();
+                request.PageSize = 100;
                 request.DomainName = domain;
                 DefaultAcsClient.DoAction(request, ClientProfile);
                 var response3 = DefaultAcsClient.GetAcsResponse(request);
