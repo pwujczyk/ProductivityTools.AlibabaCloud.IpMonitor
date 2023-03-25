@@ -127,7 +127,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             Log($"Waiting 1 minute:{ DateTime.Now} for host {host}");
         }
 
-        //pw: to be changed sent na send
         private void SendEmail(string body)
         {
             Log("Try to send email");
@@ -140,7 +139,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             {
                 Log(ex.Message);
             }
-
         }
     }
 }

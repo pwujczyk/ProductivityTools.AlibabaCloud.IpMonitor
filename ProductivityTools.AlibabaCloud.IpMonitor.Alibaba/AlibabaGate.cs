@@ -23,15 +23,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
             this.AccessKeySecret = accessKeySecret;
         }
 
-        //private string Region
-        //{
-        //    get
-        //    {
-
-        //        var r = string.Empty;
-        //        return r;
-        //    }
-        //}
 
         IClientProfile ClientProfile
         {
@@ -92,7 +83,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
                 requestdomain.RR = currentconfiguration.RR;
                 requestdomain.Type = currentconfiguration.Type;
                 requestdomain._Value = ipAddress;
-                //client.DoAction(requestdomain, clientProfile);
                 var response2 = DefaultAcsClient.GetAcsResponse(requestdomain);
             }
             catch (Exception ex)
