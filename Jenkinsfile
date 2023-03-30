@@ -11,7 +11,7 @@ pipeline {
         }
 		stage('UnInstallService') {
             steps {
-                powershell('If (Get-Service ProductivityTools.Alibaba -ErrorAction SilentlyContinue) {UnInstall-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe}') 
+                powershell('If (Get-Service ProductivityTools.Alibaba -ErrorAction SilentlyContinue) {UnInstall-Service -ExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe}') 
 			}
         }
         	
@@ -52,7 +52,7 @@ pipeline {
         }	
 		stage('InstallService') {
             steps {
-                powershell('Install-Service -ServiceExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
+                powershell('Install-Service -ExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
             }
         }		
 		stage('StartService') {
