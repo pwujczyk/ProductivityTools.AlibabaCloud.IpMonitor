@@ -46,9 +46,8 @@ pipeline {
         }	
 
 		stage ("wait_prior_starting_smoke_testing") {
-			def time = 60
 			echo "Waiting 60 seconds for deployment to complete prior starting smoke testing"
-			sleep time.toInteger() // seconds
+			sleep(60)
 		}
 
 		stage('CopyFiles') {
