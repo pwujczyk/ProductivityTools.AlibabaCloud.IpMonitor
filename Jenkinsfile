@@ -44,8 +44,14 @@ pipeline {
                 powershell('Install-Module -Name ProductivityTools.InstallService -Force')
             }
         }	
+		
+		stage('RemoveDirectory') {
+            steps {
+                powershell(Remove-Item -Recurse -Force "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\"')
+            }
+        }	
 
-		stage ("wait_prior_starting_smoke_testing") {
+		stage ("60secWaiting") {
 			steps{
 				 powershell('start-sleep -seconds 60')
 			}
