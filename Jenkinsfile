@@ -45,6 +45,12 @@ pipeline {
             }
         }	
 
+		stage ("wait_prior_starting_smoke_testing") {
+			def time = 60
+			echo "Waiting 60 seconds for deployment to complete prior starting smoke testing"
+			sleep time.toInteger() // seconds
+		}
+
 		stage('CopyFiles') {
             steps {
                 bat('xcopy ".\\ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\\bin\\Debug" "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\" /O /X /E /H /K /Y')
