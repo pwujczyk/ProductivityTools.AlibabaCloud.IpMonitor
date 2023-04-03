@@ -46,7 +46,9 @@ pipeline {
         }	
 
 		stage ("wait_prior_starting_smoke_testing") {
-			sleep(60)
+			steps{
+				sleep(60)
+			}
 		}
 
 		stage('CopyFiles') {
