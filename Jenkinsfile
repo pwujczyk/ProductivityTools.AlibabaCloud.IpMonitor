@@ -47,7 +47,7 @@ pipeline {
 		
 		stage('RemoveDirectory') {
             steps {
-                powershell(Remove-Item -Recurse -Force "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\"')
+                powershell('Remove-Item -Recurse -Force "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\"')
             }
         }	
 
