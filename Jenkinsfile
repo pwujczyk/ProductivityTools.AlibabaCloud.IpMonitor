@@ -45,17 +45,19 @@ pipeline {
             }
         }	
 		
+		stage ("60secWaiting") {
+			steps{
+				 powershell('start-sleep -seconds 60')
+			}
+		}
+		
 		stage('RemoveDirectory') {
             steps {
                 powershell('Remove-Item -Recurse -Force "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\"')
             }
         }	
 
-		stage ("60secWaiting") {
-			steps{
-				 powershell('start-sleep -seconds 60')
-			}
-		}
+
 
 		stage('CopyFiles') {
             steps {
