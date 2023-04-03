@@ -47,7 +47,7 @@ pipeline {
 
 		stage ("wait_prior_starting_smoke_testing") {
 			steps{
-				sleep(60)
+				 powershell('start-sleep -seconds 60')
 			}
 		}
 
