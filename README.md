@@ -1,1 +1,19 @@
-# ProductivityTools.AlibabaCloud.IpMonitor
+<!--Category:C#--> 
+ <p align="right">
+    <a href="http://productivitytools.tech/get-onedrivedirectory/"><img src="Images/Header/ProductivityTools_green_40px_2.png" /><a> 
+    <a href="https://github.com/pwujczyk/ProductivityTools.AlibabaCloud.IpMonitor"><img src="Images/Header/Github_border_40px.png" /></a>
+</p>
+<p align="center">
+    <a href="http://http://productivitytools.tech/">
+        <img src="Images/Header/LogoTitle_green_500px.png" />
+    </a>
+</p>
+
+
+# AlibabaCloud.IpMonitor
+
+Windows service which keep Alibaba DNS in sync with public address of the server.
+
+<!--more-->
+
+I do not have public IP, but I have server where I host applications. This application is installed as a service. Every x seconds it checks what is the assigned public IP to my router and updates value on Alibaba DNS servers. 
