@@ -1,6 +1,6 @@
 <!--Category:C#--> 
  <p align="right">
-    <a href="http://productivitytools.tech/get-onedrivedirectory/"><img src="Images/Header/ProductivityTools_green_40px_2.png" /><a> 
+    <a href="http://productivitytools.top/alibabacloud-ipmonitor/"><img src="Images/Header/ProductivityTools_green_40px_2.png" /><a> 
     <a href="https://github.com/pwujczyk/ProductivityTools.AlibabaCloud.IpMonitor"><img src="Images/Header/Github_border_40px.png" /></a>
 </p>
 <p align="center">
@@ -28,7 +28,7 @@ In the config we have values
   "AccessKeyId":"",
   "AccessKeySecret":"",
   "GmailPassword":"", 
-  "Hosts":["purchase","echo","jenkinswebhook","meetings","identityserver","apiteammanagement","apigettask3","apitraininglog","apisalaries","cam","apitrips","remote"]
+  "Hosts":["purchase","echo","jenkinswebhook","meetings","identityserver","apiteammanagement","apigettask3"]
 }
 ```
 
