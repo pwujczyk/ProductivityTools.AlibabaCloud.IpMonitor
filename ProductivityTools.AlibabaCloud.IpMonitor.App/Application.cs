@@ -81,26 +81,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             Thread.Sleep(TimeSpan.FromMinutes(1));
         }
 
-        //private void InitialCheck(string host)
-        //{
-        //    var currentExternalIp = Ifconfig.GetPublicIpAddress();
-        //    Console.WriteLine(currentExternalIp);
-
-
-        //    string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
-        //    if (currentExternalIp == currentAlibabaConfiguration)
-        //    {
-        //        SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' is the same as set up in Alibaba ({currentAlibabaConfiguration}), no action.");
-        //        this.LastPublicAddress = currentExternalIp;
-        //    }
-        //    else
-        //    {
-        //        alibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
-        //        var updatedValue = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-        //        SendEmail($"Current IP address ({currentExternalIp}) for host '{host}' was different than in Alibaba({currentAlibabaConfiguration}).Address updated to {updatedValue}.");
-        //    }
-        //}
-
         private void Log(string log)
         {
             EventLog.WriteEntry("AlibabaCloud.IpMonitor", log, EventLogEntryType.Information);
