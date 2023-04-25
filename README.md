@@ -37,3 +37,5 @@ In the config we have values
 To get external IP service is using http://ifconfig.me/ip webpage.
 
 ![](Images/2023-04-26-18-10-16.png)
+
+Application is also using Master configuration nuget package. 
