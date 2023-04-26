@@ -33,3 +33,7 @@ In the config we have values
 ```
 
 ![](Images/2023-04-23-07-49-56.png)
+
+To get external IP service is using http://ifconfig.me/ip webpage.
+
+![](Images/2023-04-26-18-10-16.png)
