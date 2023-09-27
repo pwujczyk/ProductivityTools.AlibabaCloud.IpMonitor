@@ -23,7 +23,7 @@ pipeline {
 		
         stage('clone') {
             steps {
-                git branch: 'master',
+                git branch: 'main',
                 url: 'https://github.com/pwujczyk/ProductivityTools.AlibabaCloud.IpMonitor'
             }
         }
