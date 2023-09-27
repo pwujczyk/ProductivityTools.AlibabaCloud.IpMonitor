@@ -30,7 +30,7 @@ pipeline {
 		
 		stage('restore') {
             steps {
-                bat(script: "C:\\bin\\nuget.exe restore", returnStdout: true)
+                bat(script: "C:\\Bin\\SimpleMarketPlace\\App.Nuget\\nuget.exe restore", returnStdout: true)
             }
         }
 		
