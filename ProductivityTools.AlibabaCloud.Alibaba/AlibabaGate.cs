@@ -71,8 +71,8 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 else
                 {
                     ValidateRecordData(record, host, externalIp);
+                    records.Remove(record);
                 }
-                records.Remove(record);
             }
 
 
@@ -112,7 +112,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 newDomainRecordRequest._Value = local.Target;
             }
             var actionResult = DefaultAcsClient.DoAction(newDomainRecordRequest, ClientProfile);
-            //var response3= DefaultAcsClient.GetAcsResponse(newDomainRecordRequest);
+            var response3= DefaultAcsClient.GetResponse(actionResult);
 
         }
 
