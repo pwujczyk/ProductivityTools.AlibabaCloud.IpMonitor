@@ -83,7 +83,21 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         private void Log(string log)
         {
-            EventLog.WriteEntry("AlibabaCloud.IpMonitor", log, EventLogEntryType.Information);
+            string name = "PT.AlibabaCloud";
+
+            if (!EventLog.SourceExists(name))
+            {
+                EventSourceCreationData eventSourceData = new EventSourceCreationData(name, name);
+                EventLog.CreateEventSource(eventSourceData);
+            }
+
+            using (EventLog myLogger = new EventLog(name, ".", name))
+            {
+                //myLogger.WriteEntry("Error message", EventLogEntryType.Error);
+                myLogger.WriteEntry(log, EventLogEntryType.Information);
+            }
+
+           // EventLog.WriteEntry("AlibabaCloud.IpMonitor", log, EventLogEntryType.Information);
             Console.WriteLine(log);
         }
 

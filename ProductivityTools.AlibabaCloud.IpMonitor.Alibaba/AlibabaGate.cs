@@ -53,6 +53,12 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
             return result._Value;
         }
 
+        private void CreateDomain()
+        {
+            var x = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
+
+        }
+
         private DescribeDomainRecords_Record GetCurrentConfiguration(string domain, string host)
         {
             DescribeDomainRecords_Record x = null;
@@ -76,7 +82,8 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
         public void UpdateDnsValue(string domain, string host, string ipAddress)
         {
             var currentconfiguration = GetCurrentConfiguration(domain, host);
-            var requestdomain = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
+            
+           var requestdomain = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
             try
             {
                 requestdomain.RecordId = currentconfiguration.RecordId;
