@@ -13,7 +13,8 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 {
     public class Application
     {
-        private Dictionary<string, string> LastPublicAddress = new Dictionary<string, string>();
+        private string LastPublicAddress = "";
+       // private Dictionary<string, string> LastPublicAddressDictionary = new Dictionary<string, string>();
         private string Domain = "productivitytools.top";
         private DateTime LastMonitorEmailSent = DateTime.MinValue;
         private int ExceptionsCount = 0;
@@ -69,19 +70,21 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
         private void Check()
         {
-            var valuesSection = this.Configuration.GetSection("Hosts");
-            var itemArray = valuesSection.AsEnumerable();
-            foreach (var item in itemArray)
+            var externalIp = Ifconfig.GetPublicIpAddress();
+            if (ExternalIpChanged(externalIp))
             {
-                if (!string.IsNullOrEmpty(item.Value))
-                {
-                    Check(item.Value);
-                }
+                UpdateIpConfigurationForHosts(externalIp);
             }
+            Log($"Waiting 1 minute:{DateTime.Now}");
             Thread.Sleep(TimeSpan.FromMinutes(1));
         }
 
         private void Log(string log)
+        {
+            Log(log, EventLogEntryType.Information);
+        }
+
+        private void Log(string log, EventLogEntryType eventLogEntryType)
         {
             string name = "PT.AlibabaCloud";
 
@@ -93,53 +96,94 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
 
             using (EventLog myLogger = new EventLog(name, ".", name))
             {
-                //myLogger.WriteEntry("Error message", EventLogEntryType.Error);
-                myLogger.WriteEntry(log, EventLogEntryType.Information);
+                myLogger.WriteEntry(log, eventLogEntryType);
             }
 
-           // EventLog.WriteEntry("AlibabaCloud.IpMonitor", log, EventLogEntryType.Information);
             Console.WriteLine(log);
         }
 
-        private void Check(string host)
+        private bool ExternalIpChanged(string externalIp)
         {
-            Log("Check " + host);
-            Console.WriteLine($"Perform check. Last remember Ip:{(LastPublicAddress.ContainsKey(host) ? LastPublicAddress[host] : string.Empty)}");
-            var currentExternalIp = Ifconfig.GetPublicIpAddress();
-            if (LastPublicAddress.ContainsKey(host) == false || LastPublicAddress[host] != currentExternalIp)
+            Log($"Starting check of the IP address. Last remembered IP {LastPublicAddress}");
+            if (LastPublicAddress != externalIp)
             {
-                Log($"It seems that for host {host} address is not up to date");
-                string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
-                if (currentAlibabaConfiguration != currentExternalIp)
-                {
-                    AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
-                    //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-                    Log($"I will send address that I updated the ip in alibaba for host {host}");
-                    if (LastPublicAddress.ContainsKey(host))
-                    {
-                        SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddress[host]}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
-                    }
-                    else
-                    {
-                        SendEmail(string.Format($"First address setup for hsot {host}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
-                    }
-                    this.LastPublicAddress[host] = currentExternalIp;
-                }
-                this.LastPublicAddress[host] = currentExternalIp;
+                Log($"It seems that external IP changed, let us update all hosts from config", EventLogEntryType.Warning);
+                return true;
+               
             }
             else
             {
-                if ((DateTime.Now.Hour % 6 == 0 && LastMonitorEmailSent.AddHours(6) < DateTime.Now)
-                    || this.LastMonitorEmailSent == DateTime.MinValue)
-                {
-                    LastMonitorEmailSent = DateTime.Now;
-
-                    SendEmail($"No changes current ip:{currentExternalIp}");
-                }
+                return false;
             }
 
-            Log($"Waiting 1 minute:{ DateTime.Now} for host {host}");
         }
+
+        private void UpdateIpConfigurationForHosts(string externalIp)
+        {
+            var valuesSection = this.Configuration.GetSection("Hosts");
+            var itemArray = valuesSection.AsEnumerable();
+
+            foreach (var item in itemArray)
+            {
+                if (!string.IsNullOrEmpty(item.Value))
+                {
+                    Console.WriteLine($"Processing {item.Value}");
+                    UpdateIpConfigurationForHost(item.Value,externalIp);
+                }
+            }
+            LastPublicAddress = externalIp;
+            Log($"I will send address that I updated the ip {externalIp}");
+            
+            SendEmail(string.Format($"[Changed!] external ip address new public address {externalIp}"));
+        }
+        private void UpdateIpConfigurationForHost(string host, string externalIp)
+        {
+            string hostAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
+            if (hostAlibabaConfiguration != externalIp)
+            {
+                AlibabaGate.UpdateDnsValue(Domain, host, externalIp);
+                //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
+            }
+        }
+
+        //private void Check(string host)
+        //{
+        //    Log($"Starting check of the IP address for the host:${host}. Last remembered IP {(LastPublicAddressDictionary.ContainsKey(host) ? LastPublicAddressDictionary[host] : string.Empty)}");
+        //    var currentExternalIp = Ifconfig.GetPublicIpAddress();
+        //    if (LastPublicAddressDictionary.ContainsKey(host) == false || LastPublicAddressDictionary[host] != currentExternalIp)
+        //    {
+        //        Log($"It seems that for host {host} address is not up to date");
+        //        string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
+        //        if (currentAlibabaConfiguration != currentExternalIp)
+        //        {
+        //            AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
+        //            //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
+        //            Log($"I will send address that I updated the ip in alibaba for host {host}");
+        //            if (LastPublicAddressDictionary.ContainsKey(host))
+        //            {
+        //                SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddressDictionary[host]}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
+        //            }
+        //            else
+        //            {
+        //                SendEmail(string.Format($"First address setup for hsot {host}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
+        //            }
+        //            this.LastPublicAddressDictionary[host] = currentExternalIp;
+        //        }
+        //        this.LastPublicAddressDictionary[host] = currentExternalIp;
+        //    }
+        //    else
+        //    {
+        //        if ((DateTime.Now.Hour % 6 == 0 && LastMonitorEmailSent.AddHours(6) < DateTime.Now)
+        //            || this.LastMonitorEmailSent == DateTime.MinValue)
+        //        {
+        //            LastMonitorEmailSent = DateTime.Now;
+
+        //            SendEmail($"No changes current ip:{currentExternalIp}");
+        //        }
+        //    }
+
+        //    Log($"Waiting 1 minute:{ DateTime.Now} for host {host}");
+        //}
 
         private void SendEmail(string body)
         {
@@ -147,7 +191,7 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             try
             {
                 Console.WriteLine(body);
-                SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@hotmail.com", "DNSMonitor", body);
+                SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@gmail.com", "PT.AbibalaCloud", body);
             }
             catch (Exception ex)
             {
