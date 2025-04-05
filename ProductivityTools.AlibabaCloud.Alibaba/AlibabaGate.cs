@@ -112,8 +112,6 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 newDomainRecordRequest._Value = local.Target;
             }
             var actionResult = DefaultAcsClient.DoAction(newDomainRecordRequest, ClientProfile);
-            var response3= DefaultAcsClient.GetResponse(actionResult);
-
         }
 
         private void ValidateRecordData(DescribeDomainRecords_Record alibaba, HostConfig host, string ipaddress)
