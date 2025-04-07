@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.AlibabaCloud.IpMonitor.App
+namespace ProductivityTools.AlibabaCloud.App
 {
     public static class Ifconfig
     {

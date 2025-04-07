@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
+using ProductivityTools.AlibabaCloud.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.AlibabaCloud.IpMonitor.App
+namespace ProductivityTools.AlibabaCloud.App
 {
     public class Application
     {
@@ -142,48 +142,8 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.App
             if (hostAlibabaConfiguration != externalIp)
             {
                 AlibabaGate.UpdateDnsValue(Domain, host, externalIp);
-                //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
             }
         }
-
-        //private void Check(string host)
-        //{
-        //    Log($"Starting check of the IP address for the host:${host}. Last remembered IP {(LastPublicAddressDictionary.ContainsKey(host) ? LastPublicAddressDictionary[host] : string.Empty)}");
-        //    var currentExternalIp = Ifconfig.GetPublicIpAddress();
-        //    if (LastPublicAddressDictionary.ContainsKey(host) == false || LastPublicAddressDictionary[host] != currentExternalIp)
-        //    {
-        //        Log($"It seems that for host {host} address is not up to date");
-        //        string currentAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
-        //        if (currentAlibabaConfiguration != currentExternalIp)
-        //        {
-        //            AlibabaGate.UpdateDnsValue(Domain, host, currentExternalIp);
-        //            //var updatedAlibabaConfiguration = alibabaGate.GetcurrentIpConfiguration(Domain, host);
-        //            Log($"I will send address that I updated the ip in alibaba for host {host}");
-        //            if (LastPublicAddressDictionary.ContainsKey(host))
-        //            {
-        //                SendEmail(string.Format($"[Changed!] Last public addres:{LastPublicAddressDictionary[host]}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
-        //            }
-        //            else
-        //            {
-        //                SendEmail(string.Format($"First address setup for hsot {host}, new public address {currentExternalIp}. Value changed from: {currentAlibabaConfiguration}"));
-        //            }
-        //            this.LastPublicAddressDictionary[host] = currentExternalIp;
-        //        }
-        //        this.LastPublicAddressDictionary[host] = currentExternalIp;
-        //    }
-        //    else
-        //    {
-        //        if ((DateTime.Now.Hour % 6 == 0 && LastMonitorEmailSent.AddHours(6) < DateTime.Now)
-        //            || this.LastMonitorEmailSent == DateTime.MinValue)
-        //        {
-        //            LastMonitorEmailSent = DateTime.Now;
-
-        //            SendEmail($"No changes current ip:{currentExternalIp}");
-        //        }
-        //    }
-
-        //    Log($"Waiting 1 minute:{ DateTime.Now} for host {host}");
-        //}
 
         private void SendEmail(string body)
         {

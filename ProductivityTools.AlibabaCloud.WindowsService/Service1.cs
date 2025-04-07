@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using ProductivityTools.AlibabaCloud.IpMonitor.App;
+using ProductivityTools.AlibabaCloud.App;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using ProductivityTools.MasterConfiguration;
 using System.Threading;
 
-namespace ProductivityTools.AlibabaCloud.IpMonitor
+namespace ProductivityTools.AlibabaCloud
 {
     public partial class Service1 : ServiceBase
     {

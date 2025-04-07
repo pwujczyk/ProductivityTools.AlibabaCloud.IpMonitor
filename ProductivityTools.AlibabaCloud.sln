@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30002.166
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner", "ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner\ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner.csproj", "{E0309B05-B9E5-423B-9A8E-B010D5573B1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud", "ProductivityTools.AlibabaCloud.Alibaba\ProductivityTools.AlibabaCloud.csproj", "{C1005382-3857-42A3-82C1-38F56BACFB17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.Alibaba", "ProductivityTools.AlibabaCloud.IpMonitor.Alibaba\ProductivityTools.AlibabaCloud.IpMonitor.Alibaba.csproj", "{C1005382-3857-42A3-82C1-38F56BACFB17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.App", "ProductivityTools.AlibabaCloud.App\ProductivityTools.AlibabaCloud.App.csproj", "{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.App", "ProductivityTools.AlibabaCloud.IpMonitor.App\ProductivityTools.AlibabaCloud.IpMonitor.App.csproj", "{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.CmdRunner", "ProductivityTools.AlibabaCloud.CmdRunner\ProductivityTools.AlibabaCloud.CmdRunner.csproj", "{E0309B05-B9E5-423B-9A8E-B010D5573B1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.IpMonitor.WindowService", "ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\ProductivityTools.AlibabaCloud.IpMonitor.WindowService.csproj", "{F86D3DD7-5EC9-4999-B587-1B14C9617959}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.WindowService", "ProductivityTools.AlibabaCloud.WindowsService\ProductivityTools.AlibabaCloud.WindowService.csproj", "{F86D3DD7-5EC9-4999-B587-1B14C9617959}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C1005382-3857-42A3-82C1-38F56BACFB17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1005382-3857-42A3-82C1-38F56BACFB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1005382-3857-42A3-82C1-38F56BACFB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,6 +25,10 @@ Global
 		{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0309B05-B9E5-423B-9A8E-B010D5573B1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F86D3DD7-5EC9-4999-B587-1B14C9617959}.Release|Any CPU.ActiveCfg = Release|Any CPU

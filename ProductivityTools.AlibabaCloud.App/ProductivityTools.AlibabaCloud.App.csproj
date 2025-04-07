@@ -115,14 +115,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.IpMonitor.Alibaba\ProductivityTools.AlibabaCloud.IpMonitor.Alibaba.csproj">
-      <Project>{C1005382-3857-42A3-82C1-38F56BACFB17}</Project>
-      <Name>ProductivityTools.AlibabaCloud.IpMonitor.Alibaba</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.Alibaba\ProductivityTools.AlibabaCloud.csproj">
+      <Project>{c1005382-3857-42a3-82c1-38f56bacfb17}</Project>
+      <Name>ProductivityTools.AlibabaCloud</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />

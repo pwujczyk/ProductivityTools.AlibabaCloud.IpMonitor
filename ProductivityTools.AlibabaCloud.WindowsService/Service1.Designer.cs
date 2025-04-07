@@ -1,4 +1,4 @@
-﻿namespace ProductivityTools.AlibabaCloud.IpMonitor
+﻿namespace ProductivityTools.AlibabaCloud
 {
     partial class Service1
     {

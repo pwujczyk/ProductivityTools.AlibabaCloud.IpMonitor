@@ -153,9 +153,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.IpMonitor.App\ProductivityTools.AlibabaCloud.IpMonitor.App.csproj">
+    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.App\ProductivityTools.AlibabaCloud.App.csproj">
       <Project>{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}</Project>
-      <Name>ProductivityTools.AlibabaCloud.IpMonitor.App</Name>
+      <Name>ProductivityTools.AlibabaCloud.App</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

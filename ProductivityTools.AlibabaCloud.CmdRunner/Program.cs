@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.AlibabaCloud.IpMonitor.CmdRunner
+namespace ProductivityTools.AlibabaCloud.CmdRunner
 {
     class Program
     {
