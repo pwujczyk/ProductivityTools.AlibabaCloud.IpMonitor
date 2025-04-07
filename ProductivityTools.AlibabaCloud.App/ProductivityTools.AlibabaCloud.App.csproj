@@ -119,9 +119,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.Alibaba\ProductivityTools.AlibabaCloud.csproj">
+    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.Alibaba\ProductivityTools.AlibabaCloud.Alibaba.csproj">
       <Project>{c1005382-3857-42a3-82c1-38f56bacfb17}</Project>
-      <Name>ProductivityTools.AlibabaCloud</Name>
+      <Name>ProductivityTools.AlibabaCloud.Alibaba</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

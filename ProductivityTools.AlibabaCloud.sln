@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35828.75 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud", "ProductivityTools.AlibabaCloud.Alibaba\ProductivityTools.AlibabaCloud.csproj", "{C1005382-3857-42A3-82C1-38F56BACFB17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.Alibaba", "ProductivityTools.AlibabaCloud.Alibaba\ProductivityTools.AlibabaCloud.Alibaba.csproj", "{C1005382-3857-42A3-82C1-38F56BACFB17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.AlibabaCloud.App", "ProductivityTools.AlibabaCloud.App\ProductivityTools.AlibabaCloud.App.csproj", "{7C33FD7D-E343-439F-8C8A-E2E22BBB6F36}"
 EndProject

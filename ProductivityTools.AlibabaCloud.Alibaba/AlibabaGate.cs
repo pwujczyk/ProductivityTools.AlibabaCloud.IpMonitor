@@ -53,9 +53,16 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             return result._Value;
         }
 
-        private void CreateDomain()
+        public void CreateDomain()
         {
             var x = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
+            var request =new  Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsRequest();
+            request.DomainName = "productivitytools.top";
+            var r=DefaultAcsClient.DoAction(request, ClientProfile);
+            var response3 = DefaultAcsClient.GetAcsResponse(request);
+            Console.WriteLine(r);
+
+
 
         }
 

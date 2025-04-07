@@ -71,6 +71,7 @@ namespace ProductivityTools.AlibabaCloud.App
         private void Check()
         {
             var externalIp = Ifconfig.GetPublicIpAddress();
+            AlibabaGate.CreateDomain();
             if (ExternalIpChanged(externalIp))
             {
                 UpdateIpConfigurationForHosts(externalIp);
