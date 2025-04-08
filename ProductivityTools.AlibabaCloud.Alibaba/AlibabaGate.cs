@@ -1,6 +1,7 @@
 ﻿using Aliyun.Acs.Alidns.Model.V20150109;
 using Aliyun.Acs.Core;
 using Aliyun.Acs.Core.Profile;
+using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,17 +54,55 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             return result._Value;
         }
 
-        public void CreateDomain()
+        public void CreateDomain(HostConfig[] hosts)
+        {
+            var records=GetCurrentDomainRecords("productivitytools.top");
+            foreach(var host in hosts)
+            {
+                var record = records.FirstOrDefault(x => x.RR == host.RR);
+                if (record==null)
+                {
+                    CreateNewRecord(host);
+                }
+                else
+                {
+                    ValidateRecordData(record, host);
+                }
+            }
+            Console.WriteLine(records);
+
+
+
+        }
+
+        private void CreateNewRecord( HostConfig local)
+        {
+
+        }
+
+        private void ValidateRecordData(DescribeDomainRecords_Record alibaba, HostConfig host)
+        {
+            if (alibaba.Type == host.Type && alibaba._Value == host.Target && alibaba.RR == host.RR)
+            {
+                Console.Write("Do nothing");
+            }
+            else
+            {
+                Console.WriteLine("update value");
+            }
+
+        }
+
+        private List<DescribeDomainRecords_Record> GetCurrentDomainRecords(string domain)
         {
             var x = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
-            var request =new  Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsRequest();
-            request.DomainName = "productivitytools.top";
-            var r=DefaultAcsClient.DoAction(request, ClientProfile);
+            var request = new Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsRequest();
+            request.DomainName = domain;
+            request.PageSize = 100;
+            var r = DefaultAcsClient.DoAction(request, ClientProfile);
             var response3 = DefaultAcsClient.GetAcsResponse(request);
-            Console.WriteLine(r);
-
-
-
+            var records = response3.DomainRecords;
+            return records;
         }
 
         private DescribeDomainRecords_Record GetCurrentConfiguration(string domain, string host)

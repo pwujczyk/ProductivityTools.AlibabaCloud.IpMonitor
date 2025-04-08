@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ProductivityTools.AlibabaCloud.Alibaba;
+using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -70,8 +71,9 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private void Check()
         {
-            var externalIp = Ifconfig.GetPublicIpAddress();
-            AlibabaGate.CreateDomain();
+            var externalIp = Ifconfig.GetPublicIpAddress(); 
+            var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
+            AlibabaGate.CreateDomain(hosts);
             if (ExternalIpChanged(externalIp))
             {
                 UpdateIpConfigurationForHosts(externalIp);
