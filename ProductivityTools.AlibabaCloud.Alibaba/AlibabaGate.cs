@@ -69,9 +69,21 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 {
                     ValidateRecordData(record, host);
                 }
+                records.Remove(record);
             }
             Console.WriteLine(records);
 
+            var rremove = records.FirstOrDefault(x => x.RR == "jenkins-tiny-px1");
+
+            RemoveRecord(rremove);
+
+        }
+
+        private void RemoveRecord(DescribeDomainRecords_Record alibaba)
+        {
+            var deleteDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.DeleteDomainRecordRequest();
+            deleteDomainRecordRequest.RecordId = alibaba.RecordId;
+            var actionResult = DefaultAcsClient.DoAction(deleteDomainRecordRequest, ClientProfile);
 
 
         }
