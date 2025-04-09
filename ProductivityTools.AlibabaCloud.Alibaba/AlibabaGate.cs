@@ -56,13 +56,14 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         public void CreateDomain(HostConfig[] hosts)
         {
-            var records=GetCurrentDomainRecords("productivitytools.top");
+            string domainName = "productivitytools.top";
+            var records=GetCurrentDomainRecords(domainName);
             foreach(var host in hosts)
             {
                 var record = records.FirstOrDefault(x => x.RR == host.RR);
                 if (record==null)
                 {
-                    CreateNewRecord(host);
+                    CreateNewRecord(domainName, host);
                 }
                 else
                 {
@@ -75,8 +76,15 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         }
 
-        private void CreateNewRecord( HostConfig local)
+        private void CreateNewRecord(string domainName, HostConfig local)
         {
+            var newDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
+            newDomainRecordRequest.DomainName = domainName;
+            newDomainRecordRequest.RR = local.RR;
+            newDomainRecordRequest._Value = local.Target;
+            newDomainRecordRequest.Type = local.Type;
+            var actionResult=DefaultAcsClient.DoAction(newDomainRecordRequest, ClientProfile);
+            //var response3= DefaultAcsClient.GetAcsResponse(newDomainRecordRequest);
 
         }
 
@@ -95,7 +103,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         private List<DescribeDomainRecords_Record> GetCurrentDomainRecords(string domain)
         {
-            var x = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
+            
             var request = new Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsRequest();
             request.DomainName = domain;
             request.PageSize = 100;
