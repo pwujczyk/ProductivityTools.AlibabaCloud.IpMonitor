@@ -57,11 +57,11 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
         public void CreateDomain(HostConfig[] hosts)
         {
             string domainName = "productivitytools.top";
-            var records=GetCurrentDomainRecords(domainName);
-            foreach(var host in hosts)
+            var records = GetCurrentDomainRecords(domainName);
+            foreach (var host in hosts)
             {
                 var record = records.FirstOrDefault(x => x.RR == host.RR);
-                if (record==null)
+                if (record == null)
                 {
                     CreateNewRecord(domainName, host);
                 }
@@ -83,7 +83,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             newDomainRecordRequest.RR = local.RR;
             newDomainRecordRequest._Value = local.Target;
             newDomainRecordRequest.Type = local.Type;
-            var actionResult=DefaultAcsClient.DoAction(newDomainRecordRequest, ClientProfile);
+            var actionResult = DefaultAcsClient.DoAction(newDomainRecordRequest, ClientProfile);
             //var response3= DefaultAcsClient.GetAcsResponse(newDomainRecordRequest);
 
         }
@@ -97,13 +97,43 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             else
             {
                 Console.WriteLine("update value");
+                UpdateRecord(alibaba, host);
             }
 
         }
 
+        private void UpdateRecord(DescribeDomainRecords_Record alibaba, HostConfig local)
+        {
+            var updateDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
+            updateDomainRecordRequest.RecordId = alibaba.RecordId;
+            updateDomainRecordRequest.RR = local.RR;
+            updateDomainRecordRequest._Value = local.Target;
+            updateDomainRecordRequest.Type = local.Type;
+            var response = DefaultAcsClient.GetAcsResponse(updateDomainRecordRequest);
+        }
+
+        public void UpdateDnsValue(string domain, string host, string ipAddress)
+        {
+            var currentconfiguration = GetCurrentConfiguration(domain, host);
+
+            var requestdomain = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
+            try
+            {
+                requestdomain.RecordId = currentconfiguration.RecordId;
+                requestdomain.RR = currentconfiguration.RR;
+                requestdomain.Type = currentconfiguration.Type;
+                requestdomain._Value = ipAddress;
+                var response2 = DefaultAcsClient.GetAcsResponse(requestdomain);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.ToString());
+            }
+        }
+
         private List<DescribeDomainRecords_Record> GetCurrentDomainRecords(string domain)
         {
-            
+
             var request = new Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsRequest();
             request.DomainName = domain;
             request.PageSize = 100;
@@ -133,23 +163,6 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             throw new Exception("Unknown exception");
         }
 
-        public void UpdateDnsValue(string domain, string host, string ipAddress)
-        {
-            var currentconfiguration = GetCurrentConfiguration(domain, host);
-            
-           var requestdomain = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
-            try
-            {
-                requestdomain.RecordId = currentconfiguration.RecordId;
-                requestdomain.RR = currentconfiguration.RR;
-                requestdomain.Type = currentconfiguration.Type;
-                requestdomain._Value = ipAddress;
-                var response2 = DefaultAcsClient.GetAcsResponse(requestdomain);
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex.ToString());
-            }
-        }
+
     }
 }
