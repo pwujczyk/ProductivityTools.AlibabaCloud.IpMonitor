@@ -63,7 +63,7 @@ namespace ProductivityTools.AlibabaCloud.App
                     string accessKeyId = Configuration["AccessKeyId"];
                     string accessKeySecret = Configuration["AccessKeySecret"];
 
-                    alibabaGate = new AlibabaGate(region, accessKeyId, accessKeySecret);
+                    alibabaGate = new AlibabaGate(region, accessKeyId, accessKeySecret, Log);
                 }
                 return alibabaGate;
             }
@@ -73,7 +73,7 @@ namespace ProductivityTools.AlibabaCloud.App
         {
             var externalIp = Ifconfig.GetPublicIpAddress(); 
             var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
-            AlibabaGate.CreateDomain(hosts);
+            AlibabaGate.UpdateAlibabaConfiguration(hosts);
             if (ExternalIpChanged(externalIp))
             {
                 UpdateIpConfigurationForHosts(externalIp);

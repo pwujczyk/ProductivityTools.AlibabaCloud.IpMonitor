@@ -16,12 +16,14 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
         private readonly string Region;
         private readonly string AccessKeyId;
         private readonly string AccessKeySecret;
+        private readonly Action<string> Log;
 
-        public AlibabaGate(string region, string accessKeyId, string accessKeySecret)
+        public AlibabaGate(string region, string accessKeyId, string accessKeySecret, Action<string> log)
         {
             this.Region = region;
             this.AccessKeyId = accessKeyId;
             this.AccessKeySecret = accessKeySecret;
+            this.Log = log;
         }
 
 
@@ -54,7 +56,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             return result._Value;
         }
 
-        public void CreateDomain(HostConfig[] hosts)
+        public void UpdateAlibabaConfiguration(HostConfig[] hosts)
         {
             string domainName = "productivitytools.top";
             var records = GetCurrentDomainRecords(domainName);
@@ -71,11 +73,10 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 }
                 records.Remove(record);
             }
-            Console.WriteLine(records);
 
             var rremove = records.FirstOrDefault(x => x.RR == "jenkins-tiny-px1");
 
-            RemoveRecord(rremove);
+           // RemoveRecord(rremove);
 
         }
 
@@ -90,6 +91,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         private void CreateNewRecord(string domainName, HostConfig local)
         {
+            Log($"New record creation for domain {domainName}, type:{local.Type}, RR:{local.RR} Value:{local.Target} ");
             var newDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
             newDomainRecordRequest.DomainName = domainName;
             newDomainRecordRequest.RR = local.RR;
@@ -104,11 +106,10 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
         {
             if (alibaba.Type == host.Type && alibaba._Value == host.Target && alibaba.RR == host.RR)
             {
-                Console.Write("Do nothing");
+                Log($"Record type: {host.Type}, RR:{host.RR} Value:{host.Target} has up-to-date data");
             }
             else
             {
-                Console.WriteLine("update value");
                 UpdateRecord(alibaba, host);
             }
 
@@ -116,6 +117,8 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         private void UpdateRecord(DescribeDomainRecords_Record alibaba, HostConfig local)
         {
+            Log($"Update record type:{local.Type}, rr:{local.RR} value:{local.Target} ");
+
             var updateDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
             updateDomainRecordRequest.RecordId = alibaba.RecordId;
             updateDomainRecordRequest.RR = local.RR;
