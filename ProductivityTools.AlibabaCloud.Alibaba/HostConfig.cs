@@ -11,5 +11,6 @@ namespace ProductivityTools.AlibabaCloud.IpMonitor.Alibaba
         public string RR { get; set; }
         public string Type { get; set; }
         public string Target { get; set; }
+        public bool  MapToExternal { get; set; }
     }
 }

@@ -56,7 +56,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             return result._Value;
         }
 
-        public void UpdateAlibabaConfiguration(HostConfig[] hosts)
+        public void UpdateAlibabaConfiguration(HostConfig[] hosts, string externalIp)
         {
             string domainName = "productivitytools.top";
             var records = GetCurrentDomainRecords(domainName);
@@ -65,7 +65,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 var record = records.FirstOrDefault(x => x.RR == host.RR);
                 if (record == null)
                 {
-                    CreateNewRecord(domainName, host);
+                    CreateNewRecord(domainName, host, externalIp);
                 }
                 else
                 {
@@ -74,9 +74,10 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 records.Remove(record);
             }
 
+
             var rremove = records.FirstOrDefault(x => x.RR == "jenkins-tiny-px1");
 
-           // RemoveRecord(rremove);
+            // RemoveRecord(rremove);
 
         }
 
@@ -89,14 +90,22 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         }
 
-        private void CreateNewRecord(string domainName, HostConfig local)
+        private void CreateNewRecord(string domainName, HostConfig local, string externalIp)
         {
             Log($"New record creation for domain {domainName}, type:{local.Type}, RR:{local.RR} Value:{local.Target} ");
             var newDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
             newDomainRecordRequest.DomainName = domainName;
             newDomainRecordRequest.RR = local.RR;
-            newDomainRecordRequest._Value = local.Target;
             newDomainRecordRequest.Type = local.Type;
+
+            if (local.MapToExternal)
+            {
+                newDomainRecordRequest._Value = externalIp;
+            }
+            else
+            {
+                newDomainRecordRequest._Value = local.Target;
+            }
             var actionResult = DefaultAcsClient.DoAction(newDomainRecordRequest, ClientProfile);
             //var response3= DefaultAcsClient.GetAcsResponse(newDomainRecordRequest);
 
