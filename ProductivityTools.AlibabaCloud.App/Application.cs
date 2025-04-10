@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using ProductivityTools.AlibabaCloud.Alibaba;
 using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,26 +17,43 @@ namespace ProductivityTools.AlibabaCloud.App
     public class Application
     {
         private string LastPublicAddress = "";
-       // private Dictionary<string, string> LastPublicAddressDictionary = new Dictionary<string, string>();
+        // private Dictionary<string, string> LastPublicAddressDictionary = new Dictionary<string, string>();
         private string Domain = "productivitytools.top";
         private DateTime LastMonitorEmailSent = DateTime.MinValue;
         private int ExceptionsCount = 0;
         private readonly IConfigurationRoot Configuration;
+        private readonly FileSystemWatcher FileSystemWatcher;
 
         public Application(IConfigurationRoot configuration)
         {
             this.Configuration = configuration;
+            foreach (var provider in this.Configuration.Providers)
+            {
+                JsonConfigurationProvider JsonConfigurationProvider = provider as JsonConfigurationProvider;
+                if (JsonConfigurationProvider != null)
+                {
+                    var fileProvider = JsonConfigurationProvider.Source.FileProvider as Microsoft.Extensions.FileProviders.PhysicalFileProvider;
+                    if (fileProvider != null)
+                    {
+                        var pathToWatch = fileProvider.Root;
+                        this.FileSystemWatcher = new FileSystemWatcher(pathToWatch);
+                    }
+                }
+            }
         }
+
 
         public void Run()
         {
-            Check();
-
+            //Check();
+            EnableFileWatcher();
             while (true)
             {
+                Log($"Waiting 1 minute:{DateTime.Now}");
+                Thread.Sleep(TimeSpan.FromMinutes(1));
                 try
                 {
-                    Check();
+                    //Check();
                     ExceptionsCount = 0;
                 }
                 catch (Exception ex)
@@ -69,9 +88,38 @@ namespace ProductivityTools.AlibabaCloud.App
             }
         }
 
+        private void EnableFileWatcher()
+        {
+
+            FileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
+
+            FileSystemWatcher.Changed += OnChanged;
+
+
+            FileSystemWatcher.Filter = "ProductivityTools.AlibabaCloud.json";
+            FileSystemWatcher.EnableRaisingEvents = true;
+        }
+        private void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            if (e.ChangeType != WatcherChangeTypes.Changed)
+            {
+                return;
+            }
+            UpdateAlibabaFromFile();
+            Log($"File changed: {e.FullPath}", EventLogEntryType.Information);
+        }
+
+        private void UpdateAlibabaFromFile()
+        {
+            var externalIp = Ifconfig.GetPublicIpAddress();
+            Configuration.Reload();
+            var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
+            AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
+        }
+
         private void Check()
         {
-            var externalIp = Ifconfig.GetPublicIpAddress(); 
+            var externalIp = Ifconfig.GetPublicIpAddress();
             var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
             AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
 
@@ -114,7 +162,7 @@ namespace ProductivityTools.AlibabaCloud.App
             {
                 Log($"It seems that external IP changed, let us update all hosts from config", EventLogEntryType.Warning);
                 return true;
-               
+
             }
             else
             {
@@ -133,12 +181,12 @@ namespace ProductivityTools.AlibabaCloud.App
                 if (!string.IsNullOrEmpty(item.Value))
                 {
                     Console.WriteLine($"Processing {item.Value}");
-                    UpdateIpConfigurationForHost(item.Value,externalIp);
+                    UpdateIpConfigurationForHost(item.Value, externalIp);
                 }
             }
             LastPublicAddress = externalIp;
             Log($"I will send address that I updated the ip {externalIp}");
-            
+
             SendEmail(string.Format($"[Changed!] external ip address new public address {externalIp}"));
         }
         private void UpdateIpConfigurationForHost(string host, string externalIp)

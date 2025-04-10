@@ -5,6 +5,7 @@ using ProductivityTools.AlibabaCloud.IpMonitor.Alibaba;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Aliyun.Acs.Alidns.Model.V20150109.DescribeDomainRecordsResponse;
@@ -69,13 +70,17 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 }
                 else
                 {
-                    ValidateRecordData(record, host);
+                    ValidateRecordData(record, host, externalIp);
                 }
                 records.Remove(record);
             }
 
 
             var rremove = records.FirstOrDefault(x => x.RR == "jenkins-tiny-px1");
+            foreach(var record in records)
+            {
+                RemoveRecord(record);
+            }
 
             // RemoveRecord(rremove);
 
@@ -83,6 +88,8 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         private void RemoveRecord(DescribeDomainRecords_Record alibaba)
         {
+            Log($"Removing record:{alibaba.RR} domain {alibaba.DomainName}, type:{alibaba.Type}, Value:{alibaba._Value} ");
+
             var deleteDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.DeleteDomainRecordRequest();
             deleteDomainRecordRequest.RecordId = alibaba.RecordId;
             var actionResult = DefaultAcsClient.DoAction(deleteDomainRecordRequest, ClientProfile);
@@ -92,7 +99,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         private void CreateNewRecord(string domainName, HostConfig local, string externalIp)
         {
-            Log($"New record creation for domain {domainName}, type:{local.Type}, RR:{local.RR} Value:{local.Target} ");
+            Log($"New record creation for  RR:{local.RR} domain {domainName}, type:{local.Type}, Value:{local.Target} ");
             var newDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.AddDomainRecordRequest();
             newDomainRecordRequest.DomainName = domainName;
             newDomainRecordRequest.RR = local.RR;
@@ -111,27 +118,29 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
 
         }
 
-        private void ValidateRecordData(DescribeDomainRecords_Record alibaba, HostConfig host)
+        private void ValidateRecordData(DescribeDomainRecords_Record alibaba, HostConfig host, string ipaddress)
         {
-            if (alibaba.Type == host.Type && alibaba._Value == host.Target && alibaba.RR == host.RR)
+            if (alibaba.Type == host.Type && alibaba.RR == host.RR &&
+               ((host.MapToExternal && alibaba._Value == ipaddress) || (host.MapToExternal == false && alibaba._Value == host.Target)))
             {
-                Log($"Record type: {host.Type}, RR:{host.RR} Value:{host.Target} has up-to-date data");
+                Log($"No change for record RR:{host.RR} type: {host.Type}, Value:{host.Target}");
             }
             else
             {
-                UpdateRecord(alibaba, host);
+                UpdateRecord(alibaba, host, ipaddress);
             }
 
         }
 
-        private void UpdateRecord(DescribeDomainRecords_Record alibaba, HostConfig local)
+        private void UpdateRecord(DescribeDomainRecords_Record alibaba, HostConfig local,string ipaddress)
         {
-            Log($"Update record type:{local.Type}, rr:{local.RR} value:{local.Target} ");
+            var tragetValue = local.MapToExternal ? ipaddress : local.Target;
+            Log($"Update record  rr:{local.RR} type:{local.Type}, value:{tragetValue} ");
 
             var updateDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.UpdateDomainRecordRequest();
             updateDomainRecordRequest.RecordId = alibaba.RecordId;
             updateDomainRecordRequest.RR = local.RR;
-            updateDomainRecordRequest._Value = local.Target;
+            updateDomainRecordRequest._Value = tragetValue;
             updateDomainRecordRequest.Type = local.Type;
             var response = DefaultAcsClient.GetAcsResponse(updateDomainRecordRequest);
         }
