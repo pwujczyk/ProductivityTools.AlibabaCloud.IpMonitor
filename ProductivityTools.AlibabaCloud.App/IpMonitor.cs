@@ -26,7 +26,7 @@ namespace ProductivityTools.AlibabaCloud.App
                     publicIPAddress = reader.ReadToEnd();
                 }
             }
-
+            //return "128.0.0.1";
             return publicIPAddress.Replace("\n", "");
         }
     }

@@ -24,6 +24,24 @@ namespace ProductivityTools.AlibabaCloud.App
         private readonly IConfigurationRoot Configuration;
         private readonly FileSystemWatcher FileSystemWatcher;
 
+        AlibabaGate alibabaGate;
+        AlibabaGate AlibabaGate
+        {
+            get
+            {
+                if (alibabaGate == null)
+                {
+                    string region = Configuration["Region"];
+                    string accessKeyId = Configuration["AccessKeyId"];
+                    string accessKeySecret = Configuration["AccessKeySecret"];
+
+                    alibabaGate = new AlibabaGate(region, accessKeyId, accessKeySecret, Log);
+                }
+                return alibabaGate;
+            }
+        }
+
+
         public Application(IConfigurationRoot configuration)
         {
             this.Configuration = configuration;
@@ -45,15 +63,12 @@ namespace ProductivityTools.AlibabaCloud.App
 
         public void Run()
         {
-            //Check();
             EnableFileWatcher();
             while (true)
             {
-                Log($"Waiting 1 minute:{DateTime.Now}");
-                Thread.Sleep(TimeSpan.FromMinutes(1));
                 try
                 {
-                    //Check();
+                    Check();
                     ExceptionsCount = 0;
                 }
                 catch (Exception ex)
@@ -71,34 +86,16 @@ namespace ProductivityTools.AlibabaCloud.App
             }
         }
 
-        AlibabaGate alibabaGate;
-        AlibabaGate AlibabaGate
-        {
-            get
-            {
-                if (alibabaGate == null)
-                {
-                    string region = Configuration["Region"];
-                    string accessKeyId = Configuration["AccessKeyId"];
-                    string accessKeySecret = Configuration["AccessKeySecret"];
-
-                    alibabaGate = new AlibabaGate(region, accessKeyId, accessKeySecret, Log);
-                }
-                return alibabaGate;
-            }
-        }
 
         private void EnableFileWatcher()
         {
-
             FileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-
             FileSystemWatcher.Changed += OnChanged;
-
 
             FileSystemWatcher.Filter = "ProductivityTools.AlibabaCloud.json";
             FileSystemWatcher.EnableRaisingEvents = true;
         }
+
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
@@ -113,15 +110,15 @@ namespace ProductivityTools.AlibabaCloud.App
         {
             var externalIp = Ifconfig.GetPublicIpAddress();
             Configuration.Reload();
-            var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
+            var hosts = Configuration.GetSection("Hosts").Get<HostConfig[]>();
             AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
         }
 
         private void Check()
         {
             var externalIp = Ifconfig.GetPublicIpAddress();
-            var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
-            AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
+            //var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
+            //AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
 
 
             if (ExternalIpChanged(externalIp))
@@ -173,30 +170,29 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private void UpdateIpConfigurationForHosts(string externalIp)
         {
-            var valuesSection = this.Configuration.GetSection("Hosts");
-            var itemArray = valuesSection.AsEnumerable();
+            var hosts = Configuration.GetSection("Hosts").Get<HostConfig[]>();
 
-            foreach (var item in itemArray)
-            {
-                if (!string.IsNullOrEmpty(item.Value))
-                {
-                    Console.WriteLine($"Processing {item.Value}");
-                    UpdateIpConfigurationForHost(item.Value, externalIp);
-                }
-            }
-            LastPublicAddress = externalIp;
-            Log($"I will send address that I updated the ip {externalIp}");
+            AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
+            //foreach (var host in hosts)
+            //{
+            //    if (host.MapToExternal)
+            //    {
+            //        UpdateIpConfigurationForHost(host, externalIp);
+            //    }
+            //}
+            //LastPublicAddress = externalIp;
+            //Log($"I will send address that I updated the ip {externalIp}");
 
             SendEmail(string.Format($"[Changed!] external ip address new public address {externalIp}"));
         }
-        private void UpdateIpConfigurationForHost(string host, string externalIp)
-        {
-            string hostAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host);
-            if (hostAlibabaConfiguration != externalIp)
-            {
-                AlibabaGate.UpdateDnsValue(Domain, host, externalIp);
-            }
-        }
+        //private void UpdateIpConfigurationForHost(HostConfig host, string externalIp)
+        //{
+        //    string hostAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host.RR);
+        //    if (hostAlibabaConfiguration != externalIp)
+        //    {
+        //        AlibabaGate.UpdateRecord(hostAlibabaConfiguration, host, externalIp);
+        //    }
+        //}
 
         private void SendEmail(string body)
         {

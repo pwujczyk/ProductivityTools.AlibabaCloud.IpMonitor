@@ -51,9 +51,9 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             }
         }
 
-        public string GetcurrentIpConfiguration(string domain, string host)
+        public string GetcurrentIpConfiguration(string domain, string rr)
         {
-            DescribeDomainRecords_Record result = GetCurrentConfiguration(domain, host);
+            DescribeDomainRecords_Record result = GetCurrentConfiguration(domain, rr);
             return result._Value;
         }
 
@@ -76,13 +76,14 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             }
 
 
-            var rremove = records.FirstOrDefault(x => x.RR == "jenkins-tiny-px1");
-            foreach(var record in records)
+            //var rremove = records.FirstOrDefault(x => x.RR == "jenkins-tiny-px1");
+            // RemoveRecord(rremove);
+            foreach (var record in records)
             {
                 RemoveRecord(record);
             }
 
-            // RemoveRecord(rremove);
+
 
         }
 
@@ -176,7 +177,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             return records;
         }
 
-        private DescribeDomainRecords_Record GetCurrentConfiguration(string domain, string host)
+        private DescribeDomainRecords_Record GetCurrentConfiguration(string domain, string rr)
         {
             DescribeDomainRecords_Record x = null;
             try
@@ -186,7 +187,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
                 request.DomainName = domain;
                 DefaultAcsClient.DoAction(request, ClientProfile);
                 var response3 = DefaultAcsClient.GetAcsResponse(request);
-                x = response3.DomainRecords.SingleOrDefault(d1 => d1.RR == host);
+                x = response3.DomainRecords.SingleOrDefault(d1 => d1.RR == rr);
                 return x;
             }
             catch (Exception ex)
