@@ -44,8 +44,8 @@ namespace ProductivityTools.AlibabaCloud
 
             var r = configuration["Region"];
 
-            Application application = new Application(configuration);
-            application.Run();
+            //Application application = new Application(configuration);
+            //application.Run();
         }
 
         public void OnDebug()

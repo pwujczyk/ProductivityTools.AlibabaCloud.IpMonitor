@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-ProductivityTools.AlibabaCloud.NetCoreService-fd0ced64-b636-4849-9f24-1c0f59253a88</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.4" />
+    <PackageReference Include="ProductivityTools.MasterConfiguration" Version="2.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.App\ProductivityTools.AlibabaCloud.App.csproj" />
+  </ItemGroup>
+</Project>

@@ -23,6 +23,7 @@ namespace ProductivityTools.AlibabaCloud.App
         private int ExceptionsCount = 0;
         private readonly IConfigurationRoot Configuration;
         private readonly FileSystemWatcher FileSystemWatcher;
+        private readonly CancellationToken CancellationToken;
 
         AlibabaGate alibabaGate;
         AlibabaGate AlibabaGate
@@ -42,8 +43,9 @@ namespace ProductivityTools.AlibabaCloud.App
         }
 
 
-        public Application(IConfigurationRoot configuration)
+        public Application(IConfigurationRoot configuration, CancellationToken cancellationToken)
         {
+            this.CancellationToken = cancellationToken;
             this.Configuration = configuration;
             foreach (var provider in this.Configuration.Providers)
             {
@@ -64,7 +66,7 @@ namespace ProductivityTools.AlibabaCloud.App
         public void Run()
         {
             EnableFileWatcher();
-            while (true)
+            while (!CancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -83,6 +85,7 @@ namespace ProductivityTools.AlibabaCloud.App
                         Thread.Sleep(TimeSpan.FromHours(1));
                     }
                 }
+                Thread.Sleep(TimeSpan.FromMinutes(1));
             }
         }
 
@@ -117,10 +120,6 @@ namespace ProductivityTools.AlibabaCloud.App
         private void Check()
         {
             var externalIp = Ifconfig.GetPublicIpAddress();
-            //var hosts = Configuration.GetSection("Hosts2").Get<HostConfig[]>();
-            //AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
-
-
             if (ExternalIpChanged(externalIp))
             {
                 UpdateIpConfigurationForHosts(externalIp);
@@ -159,7 +158,6 @@ namespace ProductivityTools.AlibabaCloud.App
             {
                 Log($"It seems that external IP changed, let us update all hosts from config", EventLogEntryType.Warning);
                 return true;
-
             }
             else
             {
@@ -171,28 +169,9 @@ namespace ProductivityTools.AlibabaCloud.App
         private void UpdateIpConfigurationForHosts(string externalIp)
         {
             var hosts = Configuration.GetSection("Hosts").Get<HostConfig[]>();
-
             AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
-            //foreach (var host in hosts)
-            //{
-            //    if (host.MapToExternal)
-            //    {
-            //        UpdateIpConfigurationForHost(host, externalIp);
-            //    }
-            //}
-            //LastPublicAddress = externalIp;
-            //Log($"I will send address that I updated the ip {externalIp}");
-
             SendEmail(string.Format($"[Changed!] external ip address new public address {externalIp}"));
         }
-        //private void UpdateIpConfigurationForHost(HostConfig host, string externalIp)
-        //{
-        //    string hostAlibabaConfiguration = AlibabaGate.GetcurrentIpConfiguration(Domain, host.RR);
-        //    if (hostAlibabaConfiguration != externalIp)
-        //    {
-        //        AlibabaGate.UpdateRecord(hostAlibabaConfiguration, host, externalIp);
-        //    }
-        //}
 
         private void SendEmail(string body)
         {
