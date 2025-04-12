@@ -41,13 +41,6 @@ pipeline {
                 bat('dotnet publish ProductivityTools.AlibabaCloud.sln -c Release')
             }
         }
-		stage('InstallPSModule') {
-            steps {
-                powershell('sc.exe create PT.Alibaba ProductivityTools.AlibabaCloud.NetCoreService\bin\Release\net9.0\publish\ProductivityTools.AlibabaCloud.NetCoreService.exe')
-            }
-        }	
-		
-
 		
 		stage('RemoveDirectory') {
             steps {
