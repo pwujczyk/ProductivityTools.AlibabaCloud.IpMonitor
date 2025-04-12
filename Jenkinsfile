@@ -15,7 +15,7 @@ pipeline {
 			}
         }
 
-        stage('UnInstallService') {
+        stage('UnInstallServiceNetCore') {
             steps {
                 powershell('If (Get-Service PT.Alibaba -ErrorAction SilentlyContinue) {sc.exe delete PT.Alibaba}') 
 			}
