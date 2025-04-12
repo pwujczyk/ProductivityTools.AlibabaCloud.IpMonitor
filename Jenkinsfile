@@ -14,6 +14,12 @@ pipeline {
                 powershell('If (Get-Service ProductivityTools.Alibaba -ErrorAction SilentlyContinue) {UnInstall-Service -ExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe}') 
 			}
         }
+
+        stage('UnInstallService') {
+            steps {
+                powershell('If (Get-Service PT.Alibaba -ErrorAction SilentlyContinue) {sc.exe delete PT.Alibaba}') 
+			}
+        }
         	
 		stage('deleteWorkspace') {
             steps {
@@ -28,32 +34,24 @@ pipeline {
             }
         }
 		
-		stage('restore') {
-            steps {
-                bat(script: "C:\\Bin\\SimpleMarketPlace\\App.Nuget\\nuget.exe restore", returnStdout: true)
-            }
-        }
 		
-		stage('build') {
+       stage('build') {
             steps {
-                bat(script: """ "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\MsBuild.exe" .\\ProductivityTools.AlibabaCloud.IpMonitor.sln""", returnStdout: true)
+				echo 'starting bddduild'
+                bat('dotnet publish ProductivityTools.AlibabaCloud.sln -c Release')
             }
         }
 		stage('InstallPSModule') {
             steps {
-                powershell('Install-Module -Name ProductivityTools.InstallService -Force')
+                powershell('sc.exe create PT.Alibaba ProductivityTools.AlibabaCloud.NetCoreService\bin\Release\net9.0\publish\ProductivityTools.AlibabaCloud.NetCoreService.exe')
             }
         }	
 		
-		stage ("60secWaiting") {
-			steps{
-				 powershell('start-sleep -seconds 60')
-			}
-		}
+
 		
 		stage('RemoveDirectory') {
             steps {
-                powershell('Remove-Item -Recurse -Force "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\"')
+                powershell('Remove-Item -Recurse -Force "C:\\Bin\\Services\\ProductivityTools.AlibabaCloud\\"')
             }
         }	
 
@@ -61,17 +59,17 @@ pipeline {
 
 		stage('CopyFiles') {
             steps {
-                bat('xcopy ".\\ProductivityTools.AlibabaCloud.IpMonitor.WindowsService\\bin\\Debug" "C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\" /O /X /E /H /K /Y')
+                bat('xcopy ".\\ProductivityTools.AlibabaCloud.NetCoreService\\bin\\Release\\net9.0\\publish\\" "C:\\Bin\\Services\\ProductivityTools.AlibabaCloud.NetCoreService\\" /O /X /E /H /K /Y')
             }
         }	
 		stage('InstallService') {
             steps {
-                powershell('Install-Service -ExePath C:\\Bin\\ProductivityTools.AlibabaCloud.IpMonitor\\ProductivityTools.AlibabaCloud.IpMonitor.exe')
+                powershell('sc.exe create PT.Alibaba binpath="C:\\Bin\\Services\\ProductivityTools.AlibabaCloud.NetCoreService\\ProductivityTools.AlibabaCloud.NetCoreService.exe"')
             }
         }		
 		stage('StartService') {
             steps {
-                powershell('Start-Service ProductivityTools.Alibaba')
+                powershell('Start-Service PT.Alibaba')
             }
         }			
         stage('byebye'){
