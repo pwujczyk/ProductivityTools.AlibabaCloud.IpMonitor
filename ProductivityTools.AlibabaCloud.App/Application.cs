@@ -137,7 +137,7 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private void Log(string log, EventLogEntryType eventLogEntryType)
         {
-            string name = "PT.AlibabaCloud";
+            string name = "PT.AlibabaCloud.Core";
 
             if (!EventLog.SourceExists(name))
             {
