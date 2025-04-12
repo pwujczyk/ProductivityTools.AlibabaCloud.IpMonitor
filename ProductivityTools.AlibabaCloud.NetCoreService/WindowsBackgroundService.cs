@@ -25,18 +25,18 @@ namespace ProductivityTools.AlibabaCloud.NetCoreService
 
             var r = configuration["Region"];
 
-            Application application = new Application(configuration, stoppingToken);
-            application.Run();
+            Application application = new Application(configuration);
+            await application.Run(stoppingToken);
 
-            while (!stoppingToken.IsCancellationRequested)
-            {
+            //while (!stoppingToken.IsCancellationRequested)
+            //{
              
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(1000, stoppingToken);
-            }
+            //    if (_logger.IsEnabled(LogLevel.Information))
+            //    {
+            //        _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            //    }
+            //    await Task.Delay(1000, stoppingToken);
+            //}
         }
     }
 }

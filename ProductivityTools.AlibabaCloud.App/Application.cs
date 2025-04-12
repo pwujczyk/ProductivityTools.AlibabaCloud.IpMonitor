@@ -23,7 +23,7 @@ namespace ProductivityTools.AlibabaCloud.App
         private int ExceptionsCount = 0;
         private readonly IConfigurationRoot Configuration;
         private readonly FileSystemWatcher FileSystemWatcher;
-        private readonly CancellationToken CancellationToken;
+        private readonly string ConfigurationFileName;
 
         AlibabaGate alibabaGate;
         AlibabaGate AlibabaGate
@@ -43,16 +43,16 @@ namespace ProductivityTools.AlibabaCloud.App
         }
 
 
-        public Application(IConfigurationRoot configuration, CancellationToken cancellationToken)
+        public Application(IConfigurationRoot configuration)
         {
-            this.CancellationToken = cancellationToken;
             this.Configuration = configuration;
             foreach (var provider in this.Configuration.Providers)
             {
-                JsonConfigurationProvider JsonConfigurationProvider = provider as JsonConfigurationProvider;
-                if (JsonConfigurationProvider != null)
+                JsonConfigurationProvider jsonConfigurationProvider = provider as JsonConfigurationProvider;
+                this.ConfigurationFileName = jsonConfigurationProvider.Source.Path;
+                if (jsonConfigurationProvider != null)
                 {
-                    var fileProvider = JsonConfigurationProvider.Source.FileProvider as Microsoft.Extensions.FileProviders.PhysicalFileProvider;
+                    var fileProvider = jsonConfigurationProvider.Source.FileProvider as Microsoft.Extensions.FileProviders.PhysicalFileProvider;
                     if (fileProvider != null)
                     {
                         var pathToWatch = fileProvider.Root;
@@ -63,10 +63,11 @@ namespace ProductivityTools.AlibabaCloud.App
         }
 
 
-        public void Run()
+        public async Task Run(CancellationToken cancellationToken)
         {
+            Log("XXXXX");
             EnableFileWatcher();
-            while (!CancellationToken.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -92,11 +93,13 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private void EnableFileWatcher()
         {
+            Log($"EnableFileWatcher start", EventLogEntryType.Information);
             FileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
             FileSystemWatcher.Changed += OnChanged;
 
-            FileSystemWatcher.Filter = "ProductivityTools.AlibabaCloud.json";
+            FileSystemWatcher.Filter = this.ConfigurationFileName;
             FileSystemWatcher.EnableRaisingEvents = true;
+            Log($"EnableFileWatcher end", EventLogEntryType.Information);
         }
 
         private void OnChanged(object sender, FileSystemEventArgs e)
@@ -125,7 +128,6 @@ namespace ProductivityTools.AlibabaCloud.App
                 UpdateIpConfigurationForHosts(externalIp);
             }
             Log($"Waiting 1 minute:{DateTime.Now}");
-            Thread.Sleep(TimeSpan.FromMinutes(1));
         }
 
         private void Log(string log)
