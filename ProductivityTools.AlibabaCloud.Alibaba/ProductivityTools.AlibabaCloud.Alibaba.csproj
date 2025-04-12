@@ -9,11 +9,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="aliyun-net-sdk-alidns" Version="2.6.32" />
     <PackageReference Include="aliyun-net-sdk-core" Version="1.6.2" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />

@@ -10,9 +10,6 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.WindowsService\ProductivityTools.AlibabaCloud.WindowService.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
@@ -39,5 +36,8 @@
     <PackageReference Include="System.Text.Json" Version="9.0.4" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProductivityTools.AlibabaCloud.NetCoreService\ProductivityTools.AlibabaCloud.NetCoreService.csproj" />
   </ItemGroup>
 </Project>

@@ -7,9 +7,14 @@ namespace ProductivityTools.AlibabaCloud.NetCoreService
     {
         private readonly ILogger<WindowsBackgroundService> _logger;
 
-        public WindowsBackgroundService(ILogger<WindowsBackgroundService> logger)
+        public WindowsBackgroundService()
         {
-            _logger = logger;
+         
+        }
+
+        public async Task OnDebug(CancellationToken stoppingToken)
+        {
+            await ExecuteAsync(stoppingToken);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,6 +30,7 @@ namespace ProductivityTools.AlibabaCloud.NetCoreService
 
             while (!stoppingToken.IsCancellationRequested)
             {
+             
                 if (_logger.IsEnabled(LogLevel.Information))
                 {
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
