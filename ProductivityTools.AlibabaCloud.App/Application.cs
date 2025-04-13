@@ -172,6 +172,7 @@ namespace ProductivityTools.AlibabaCloud.App
         {
             var hosts = Configuration.GetSection("Hosts").Get<HostConfig[]>();
             AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
+            LastPublicAddress = externalIp;
             SendEmail(string.Format($"[Changed!] external ip address new public address {externalIp}"));
         }
 

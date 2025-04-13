@@ -44,7 +44,7 @@ pipeline {
 		
 		stage('RemoveDirectory') {
             steps {
-                powershell('Remove-Item -Recurse -Force "C:\\Bin\\Services\\ProductivityTools.AlibabaCloud\\"')
+                powershell('Remove-Item -Recurse -Force "C:\\Bin\\Services\\ProductivityTools.AlibabaCloud.NetCoreService\\"')
             }
         }	
 
