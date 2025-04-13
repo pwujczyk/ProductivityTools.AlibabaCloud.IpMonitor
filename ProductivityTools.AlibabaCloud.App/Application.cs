@@ -182,8 +182,10 @@ namespace ProductivityTools.AlibabaCloud.App
             Log("Try to send email");
             try
             {
+                var hostname = System.Environment.MachineName;
                 Console.WriteLine(body);
-                SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@gmail.com", "PT.AbibalaCloud", body);
+                var bodyWithhostname = $"hostname: {hostname}, Message:{body}";
+                SentEmailGmail.Gmail.Send("productivitytools.tech@gmail.com", Configuration["GmailPassword"], "pwujczyk@gmail.com", "PT.AbibalaCloud", bodyWithhostname);
             }
             catch (Exception ex)
             {
