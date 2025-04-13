@@ -163,6 +163,7 @@ namespace ProductivityTools.AlibabaCloud.App
             }
             else
             {
+                Log($"Last remembered IP {LastPublicAddress} and current extrenal Ip {externalIp} are the same");
                 return false;
             }
 
