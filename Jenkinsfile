@@ -15,6 +15,13 @@ pipeline {
 			}
         }
 
+        stage('Stop Service') {
+            steps {
+                powershell('If (Get-Service PT.Alibaba -ErrorAction SilentlyContinue) {stop-service -name PT.Alibaba}') 
+			}
+        }
+        
+
         stage('UnInstallServiceNetCore') {
             steps {
                 powershell('If (Get-Service PT.Alibaba -ErrorAction SilentlyContinue) {sc.exe delete PT.Alibaba}') 
