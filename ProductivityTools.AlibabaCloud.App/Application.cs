@@ -158,7 +158,7 @@ namespace ProductivityTools.AlibabaCloud.App
             Log($"Starting check of the IP address. Last remembered IP {LastPublicAddress}");
             if (LastPublicAddress != externalIp)
             {
-                Log($"It seems that external IP changed, let us update all hosts from config", EventLogEntryType.Warning);
+                Log($"It seems that external IP changed, let us update all hosts from config. Last Public address {LastPublicAddress} externalIP: {externalIp}", EventLogEntryType.Warning);
                 return true;
             }
             else
