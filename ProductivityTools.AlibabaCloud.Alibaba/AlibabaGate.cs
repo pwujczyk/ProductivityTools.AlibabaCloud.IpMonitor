@@ -82,13 +82,10 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             {
                 RemoveRecord(record);
             }
-
-
-
         }
 
         private void RemoveRecord(DescribeDomainRecords_Record alibaba)
-        {
+       {
             Log($"Removing record:{alibaba.RR} domain {alibaba.DomainName}, type:{alibaba.Type}, Value:{alibaba._Value} ");
 
             var deleteDomainRecordRequest = new Aliyun.Acs.Alidns.Model.V20150109.DeleteDomainRecordRequest();

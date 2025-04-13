@@ -93,13 +93,26 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private void EnableFileWatcher()
         {
-            Log($"EnableFileWatcher start", EventLogEntryType.Information);
-            FileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
+            Log($"EnableFileWatcher start", EventLogEntryType.SuccessAudit);
+            FileSystemWatcher.NotifyFilter = NotifyFilters.Attributes |
+    NotifyFilters.CreationTime |
+    NotifyFilters.FileName |
+    NotifyFilters.LastAccess |
+    NotifyFilters.LastWrite |
+    NotifyFilters.Size |
+    NotifyFilters.Security;
             FileSystemWatcher.Changed += OnChanged;
-
+            FileSystemWatcher.Created += OnChanged;
             FileSystemWatcher.Filter = this.ConfigurationFileName;
+
+            var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
+            if (!File.Exists(path))
+            {
+                throw new Exception($"Path {path} does not exists");
+            }
+           
             FileSystemWatcher.EnableRaisingEvents = true;
-            Log($"EnableFileWatcher end", EventLogEntryType.Information);
+            Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.SuccessAudit);
         }
 
         private void OnChanged(object sender, FileSystemEventArgs e)
@@ -109,7 +122,7 @@ namespace ProductivityTools.AlibabaCloud.App
                 return;
             }
             UpdateAlibabaFromFile();
-            Log($"File changed: {e.FullPath}", EventLogEntryType.Information);
+            Log($"File changed: {e.FullPath}", EventLogEntryType.Warning);
         }
 
         private void UpdateAlibabaFromFile()
