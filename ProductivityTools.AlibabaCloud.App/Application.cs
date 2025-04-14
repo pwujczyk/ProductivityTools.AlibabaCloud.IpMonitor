@@ -106,7 +106,7 @@ namespace ProductivityTools.AlibabaCloud.App
             FileSystemWatcher.Created += OnChanged;
             FileSystemWatcher.Deleted += OnChanged;
             FileSystemWatcher.Renamed += OnChanged;
-            FileSystemWatcher.Filter = this.ConfigurationFileName;
+            FileSystemWatcher.Filter = "*.*";// this.ConfigurationFileName;
 
             var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
             if (!File.Exists(path))
