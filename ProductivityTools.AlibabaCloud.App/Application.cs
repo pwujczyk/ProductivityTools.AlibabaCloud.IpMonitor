@@ -121,15 +121,13 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            Log($"File watcher OnChanged invoked", EventLogEntryType.Warning);
-            Log($"ChangeType:{e.ChangeType.ToString()}", EventLogEntryType.Warning);
-            Log($"File watcher OnChanged, file changed: {e.FullPath}", EventLogEntryType.Warning);
+            Log($"File watcher OnChanged invoked, ChangeType:{e.ChangeType.ToString()}, file changed:{e.FullPath}, XXX:{e.Name} ", EventLogEntryType.Warning);
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
                 return;
             }
             UpdateAlibabaFromFile();
-            Log($"File watcher OnChanged, file changed: {e.FullPath}", EventLogEntryType.Warning);
+            //Log($"File watcher OnChanged, file changed: {e.FullPath}", EventLogEntryType.Warning);
         }
 
         private void UpdateAlibabaFromFile()
