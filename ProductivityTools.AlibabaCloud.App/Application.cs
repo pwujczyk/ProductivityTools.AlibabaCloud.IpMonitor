@@ -123,7 +123,7 @@ namespace ProductivityTools.AlibabaCloud.App
         {
             Log($"File watcher OnChanged invoked, ChangeType:{e.ChangeType.ToString()}, file changed:{e.FullPath}, XXX:{e.Name} ", EventLogEntryType.Warning);
             FileInfo file = new FileInfo(e.FullPath);
-            Log($"FileName: {file.Name}");
+            Log($"FileName: {file.Name}, {Path.GetFullPath(e.Name)}");
             
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
