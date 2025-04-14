@@ -106,13 +106,13 @@ namespace ProductivityTools.AlibabaCloud.App
             FileSystemWatcher.Created += OnChanged;
             FileSystemWatcher.Deleted += OnChanged;
             FileSystemWatcher.Renamed += OnChanged;
-            FileSystemWatcher.Filter = "*.json";// this.ConfigurationFileName;
+            //FileSystemWatcher.Filter = "*.json";// this.ConfigurationFileName;
 
-            var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
-            if (!File.Exists(path))
-            {
-                throw new Exception($"Path {path} does not exists");
-            }
+            //var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
+            //if (!File.Exists(path))
+            //{
+            //    throw new Exception($"Path {path} does not exists");
+            //}
            
             FileSystemWatcher.EnableRaisingEvents = true;
             Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.Warning);
