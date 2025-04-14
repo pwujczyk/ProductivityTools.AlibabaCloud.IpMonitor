@@ -104,6 +104,8 @@ namespace ProductivityTools.AlibabaCloud.App
     NotifyFilters.Security;
             FileSystemWatcher.Changed += OnChanged;
             FileSystemWatcher.Created += OnChanged;
+            FileSystemWatcher.Deleted += OnChanged;
+            FileSystemWatcher.Renamed += OnChanged;
             FileSystemWatcher.Filter = this.ConfigurationFileName;
 
             var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
@@ -115,6 +117,7 @@ namespace ProductivityTools.AlibabaCloud.App
             FileSystemWatcher.EnableRaisingEvents = true;
             Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.Warning);
         }
+
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
