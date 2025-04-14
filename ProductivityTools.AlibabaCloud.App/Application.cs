@@ -94,6 +94,7 @@ namespace ProductivityTools.AlibabaCloud.App
         private void EnableFileWatcher()
         {
             Log($"EnableFileWatcher start", EventLogEntryType.SuccessAudit);
+            Log($"EnableFileWatcher start", EventLogEntryType.Warning);
             FileSystemWatcher.NotifyFilter = NotifyFilters.Attributes |
     NotifyFilters.CreationTime |
     NotifyFilters.FileName |
@@ -112,17 +113,18 @@ namespace ProductivityTools.AlibabaCloud.App
             }
            
             FileSystemWatcher.EnableRaisingEvents = true;
-            Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.SuccessAudit);
+            Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.Warning);
         }
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
+            Log($"File watcher OnChanged invoked", EventLogEntryType.Warning);
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
                 return;
             }
             UpdateAlibabaFromFile();
-            Log($"File changed: {e.FullPath}", EventLogEntryType.Warning);
+            Log($"File watcher OnChanged, file changed: {e.FullPath}", EventLogEntryType.Warning);
         }
 
         private void UpdateAlibabaFromFile()
