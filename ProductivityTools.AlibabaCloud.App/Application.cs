@@ -115,7 +115,7 @@ namespace ProductivityTools.AlibabaCloud.App
             //}
            
             FileSystemWatcher.EnableRaisingEvents = true;
-            Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.Warning);
+            //Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.Warning);
         }
 
 
