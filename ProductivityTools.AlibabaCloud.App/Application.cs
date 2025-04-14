@@ -106,7 +106,7 @@ namespace ProductivityTools.AlibabaCloud.App
             FileSystemWatcher.Created += OnChanged;
             FileSystemWatcher.Deleted += OnChanged;
             FileSystemWatcher.Renamed += OnChanged;
-            FileSystemWatcher.Filter = "*.*";// this.ConfigurationFileName;
+           // FileSystemWatcher.Filter =this.ConfigurationFileName;
 
             var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
             if (!File.Exists(path))
@@ -173,7 +173,7 @@ namespace ProductivityTools.AlibabaCloud.App
 
         private bool ExternalIpChanged(string externalIp)
         {
-            Log($"Starting check of the IP address. Last remembered IP {LastPublicAddress}");
+            //Log($"Starting check of the IP address. Last remembered IP {LastPublicAddress}");
             if (LastPublicAddress != externalIp)
             {
                 Log($"It seems that external IP changed, let us update all hosts from config. Last Public address {LastPublicAddress} externalIP: {externalIp}", EventLogEntryType.Warning);
@@ -181,7 +181,7 @@ namespace ProductivityTools.AlibabaCloud.App
             }
             else
             {
-                Log($"Last remembered IP {LastPublicAddress} and current extrenal Ip {externalIp} are the same");
+                //Log($"Last remembered IP {LastPublicAddress} and current extrenal Ip {externalIp} are the same");
                 return false;
             }
 
