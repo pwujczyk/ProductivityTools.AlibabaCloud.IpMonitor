@@ -121,7 +121,7 @@ namespace ProductivityTools.AlibabaCloud.Alibaba
             if (alibaba.Type == host.Type && alibaba.RR == host.RR &&
                ((host.MapToExternal && alibaba._Value == ipaddress) || (host.MapToExternal == false && alibaba._Value == host.Target)))
             {
-                Log($"No change for record RR:{host.RR} type: {host.Type}, Value:{host.Target}");
+               // Log($"No change for record RR:{host.RR} type: {host.Type}, Value:{host.Target}");
             }
             else
             {

@@ -102,7 +102,7 @@ namespace ProductivityTools.AlibabaCloud.App
     NotifyFilters.LastWrite |
     NotifyFilters.Size |
     NotifyFilters.Security;
-            FileSystemWatcher.Changed += OnChanged;
+            //FileSystemWatcher.Changed += OnChanged;
             FileSystemWatcher.Created += OnChanged;
             FileSystemWatcher.Deleted += OnChanged;
             FileSystemWatcher.Renamed += OnChanged;
