@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +24,8 @@ namespace ProductivityTools.AlibabaCloud.App
         private int ExceptionsCount = 0;
         private readonly IConfigurationRoot Configuration;
         private readonly FileSystemWatcher FileSystemWatcher;
-        private readonly string ConfigurationFileName;
+        private readonly string ConfigurationFullPath;
+        private string FileHash { get; set; }
 
         AlibabaGate alibabaGate;
         AlibabaGate AlibabaGate
@@ -49,14 +51,14 @@ namespace ProductivityTools.AlibabaCloud.App
             foreach (var provider in this.Configuration.Providers)
             {
                 JsonConfigurationProvider jsonConfigurationProvider = provider as JsonConfigurationProvider;
-                this.ConfigurationFileName = jsonConfigurationProvider.Source.Path;
+                var configurationFileName = jsonConfigurationProvider.Source.Path;
                 if (jsonConfigurationProvider != null)
                 {
                     var fileProvider = jsonConfigurationProvider.Source.FileProvider as Microsoft.Extensions.FileProviders.PhysicalFileProvider;
                     if (fileProvider != null)
                     {
                         var pathToWatch = fileProvider.Root;
-                        this.FileSystemWatcher = new FileSystemWatcher(pathToWatch);
+                        this.ConfigurationFullPath = Path.Combine(pathToWatch, configurationFileName);
                     }
                 }
             }
@@ -66,7 +68,8 @@ namespace ProductivityTools.AlibabaCloud.App
         public async Task Run(CancellationToken cancellationToken)
         {
             Log("XXXXX");
-            EnableFileWatcher();
+            //EnableFileWatcher();
+            CheckFile();
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
@@ -90,6 +93,57 @@ namespace ProductivityTools.AlibabaCloud.App
             }
         }
 
+        private void CheckFile()
+        {
+           var sha = CalculateJsonFileHash(this.ConfigurationFullPath);
+            if (this.FileHash!=sha)
+            {
+                this.FileHash = sha;
+            }
+        }
+
+
+        public static string CalculateJsonFileHash(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine($"Error: File not found at path: {filePath}");
+                return null;
+            }
+
+            try
+            {
+                string jsonString = File.ReadAllText(filePath, Encoding.UTF8);
+                return CalculateSha256Hash(jsonString);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading file: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the SHA-256 hash of a given string.
+        /// </summary>
+        /// <param name="data">The string to hash.</param>
+        /// <returns>The SHA-256 hash as a hexadecimal string.</returns>
+        private static string CalculateSha256Hash(string data)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(data);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                // Convert byte array to a hexadecimal string
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    builder.Append(hashBytes[i].ToString("x2")); // "x2" formats as lowercase hexadecimal
+                }
+                return builder.ToString();
+            }
+        }
 
         private void EnableFileWatcher()
         {
