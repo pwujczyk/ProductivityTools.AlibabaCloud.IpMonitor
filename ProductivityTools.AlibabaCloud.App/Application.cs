@@ -66,15 +66,13 @@ namespace ProductivityTools.AlibabaCloud.App
 
 
         public async Task Run(CancellationToken cancellationToken)
-        {
-            Log("XXXXX");
-            //EnableFileWatcher();
-            CheckFile();
+        { 
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
-                    Check();
+                    MeasureExecutionTime(CheckFile);
+                    MeasureExecutionTime(CheckIP);
                     ExceptionsCount = 0;
                 }
                 catch (Exception ex)
@@ -89,25 +87,48 @@ namespace ProductivityTools.AlibabaCloud.App
                         Thread.Sleep(TimeSpan.FromHours(1));
                     }
                 }
-                Thread.Sleep(TimeSpan.FromMinutes(1));
+                //Thread.Sleep(TimeSpan.FromMinutes(1));
+                Thread.Sleep(TimeSpan.FromSeconds(10));
             }
+        }
+
+        public static void MeasureExecutionTime(Action action)
+        {
+            // Start the stopwatch.
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            // Execute the method.
+            action.Invoke();
+
+            // Stop the stopwatch.
+            stopwatch.Stop();
+
+            // Get the elapsed time.
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+
+            // Get the method name using reflection.
+            string methodName = action.Method.Name;
+
+            // Print the elapsed time to the console, including the method name.
+            Console.WriteLine($"Method '{methodName}' execution time: {elapsedTime.TotalMilliseconds} ms");
         }
 
         private void CheckFile()
         {
-           var sha = CalculateJsonFileHash(this.ConfigurationFullPath);
-            if (this.FileHash!=sha)
+            var sha = CalculateJsonFileHash(this.ConfigurationFullPath);
+            if (this.FileHash != sha)
             {
                 this.FileHash = sha;
+                UpdateAlibabaFromFile();
             }
         }
 
 
-        public static string CalculateJsonFileHash(string filePath)
+        public string CalculateJsonFileHash(string filePath)
         {
             if (!File.Exists(filePath))
             {
-                Console.WriteLine($"Error: File not found at path: {filePath}");
+                Log($"Error: File not found at path: {filePath}", EventLogEntryType.Warning);
                 return null;
             }
 
@@ -118,7 +139,7 @@ namespace ProductivityTools.AlibabaCloud.App
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error reading file: {ex.Message}");
+                Log($"Error reading file: {ex.Message}", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -145,57 +166,17 @@ namespace ProductivityTools.AlibabaCloud.App
             }
         }
 
-        private void EnableFileWatcher()
-        {
-            Log($"EnableFileWatcher start", EventLogEntryType.SuccessAudit);
-            Log($"EnableFileWatcher start", EventLogEntryType.Warning);
-            FileSystemWatcher.NotifyFilter = NotifyFilters.Attributes |
-    NotifyFilters.CreationTime |
-    NotifyFilters.FileName |
-    NotifyFilters.LastAccess |
-    NotifyFilters.LastWrite |
-    NotifyFilters.Size |
-    NotifyFilters.Security;
-            //FileSystemWatcher.Changed += OnChanged;
-            FileSystemWatcher.Created += OnChanged;
-            FileSystemWatcher.Deleted += OnChanged;
-            FileSystemWatcher.Renamed += OnChanged;
-            //FileSystemWatcher.Filter = "*.json";// this.ConfigurationFileName;
-
-            //var path = Path.Join(FileSystemWatcher.Path, FileSystemWatcher.Filter);
-            //if (!File.Exists(path))
-            //{
-            //    throw new Exception($"Path {path} does not exists");
-            //}
-           
-            FileSystemWatcher.EnableRaisingEvents = true;
-            //Log($"EnableFileWatcher end filter:{FileSystemWatcher.Filter}, path:{FileSystemWatcher.Path}, full path: {path}", EventLogEntryType.Warning);
-        }
-
-
-        private void OnChanged(object sender, FileSystemEventArgs e)
-        {
-            Log($"File watcher OnChanged invoked, ChangeType:{e.ChangeType.ToString()}, file changed:{e.FullPath}, XXX:{e.Name} ", EventLogEntryType.Warning);
-            FileInfo file = new FileInfo(e.FullPath);
-            Log($"FileName: {file.Name}, {Path.GetFullPath(e.Name)}");
-            
-            if (e.ChangeType != WatcherChangeTypes.Changed)
-            {
-                return;
-            }
-            UpdateAlibabaFromFile();
-            //Log($"File watcher OnChanged, file changed: {e.FullPath}", EventLogEntryType.Warning);
-        }
-
         private void UpdateAlibabaFromFile()
         {
+            Log($"Hash changed so updating the alibaba", EventLogEntryType.Warning);
+
             var externalIp = Ifconfig.GetPublicIpAddress();
             Configuration.Reload();
             var hosts = Configuration.GetSection("Hosts").Get<HostConfig[]>();
             AlibabaGate.UpdateAlibabaConfiguration(hosts, externalIp);
         }
 
-        private void Check()
+        private void CheckIP()
         {
             var externalIp = Ifconfig.GetPublicIpAddress();
             if (ExternalIpChanged(externalIp))
