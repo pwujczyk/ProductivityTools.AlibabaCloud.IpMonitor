@@ -88,6 +88,7 @@ namespace ProductivityTools.AlibabaCloud.App
                     }
                 }
                 //Thread.Sleep(TimeSpan.FromMinutes(1));
+                Log($"Waiting 10 seconds minute:{DateTime.Now}");
                 Thread.Sleep(TimeSpan.FromSeconds(10));
             }
         }
@@ -183,7 +184,7 @@ namespace ProductivityTools.AlibabaCloud.App
             {
                 UpdateIpConfigurationForHosts(externalIp);
             }
-            Log($"Waiting 1 minute:{DateTime.Now}");
+      
         }
 
         private void Log(string log)
