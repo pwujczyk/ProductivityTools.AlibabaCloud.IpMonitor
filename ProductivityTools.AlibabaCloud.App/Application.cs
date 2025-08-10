@@ -71,25 +71,33 @@ namespace ProductivityTools.AlibabaCloud.App
             {
                 try
                 {
-                    MeasureExecutionTime(CheckFile);
-                    MeasureExecutionTime(CheckIP);
-                    ExceptionsCount = 0;
-                }
-                catch (Exception ex)
-                {
-                    ExceptionsCount++;
-                    Console.WriteLine(ex.ToString());
-
-                    SendEmail(string.Format($"Some exception was throw{ex.ToString()}"));
-                    Thread.Sleep(TimeSpan.FromMinutes(1));
-                    if (ExceptionsCount > 10)
+                    try
                     {
-                        Thread.Sleep(TimeSpan.FromHours(1));
+                        MeasureExecutionTime(CheckFile);
+                        MeasureExecutionTime(CheckIP);
+                        ExceptionsCount = 0;
                     }
+                    catch (Exception ex)
+                    {
+                        ExceptionsCount++;
+                        Console.WriteLine(ex.ToString());
+
+                        SendEmail(string.Format($"Some exception was thrown {ex.ToString()}"));
+                        Thread.Sleep(TimeSpan.FromMinutes(1));
+                        if (ExceptionsCount > 10)
+                        {
+                            Thread.Sleep(TimeSpan.FromHours(1));
+                        }
+                    }
+                    //Thread.Sleep(TimeSpan.FromMinutes(1));
+                    Log($"Waiting 10 seconds minute:{DateTime.Now}");
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
                 }
-                //Thread.Sleep(TimeSpan.FromMinutes(1));
-                Log($"Waiting 10 seconds minute:{DateTime.Now}");
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                catch (Exception)
+                {
+                    Thread.Sleep(TimeSpan.FromHours(5));
+                }
+               
             }
         }
 
