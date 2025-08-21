@@ -12,7 +12,8 @@ namespace ProductivityTools.AlibabaCloud.App
     {
         public static string GetPublicIpAddress()
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://ifconfig.me/ip");
+            //var request = (HttpWebRequest)WebRequest.Create("http://ifconfig.me/ip");
+            var request = (HttpWebRequest)WebRequest.Create("https://api.ipify.org");
 
             request.UserAgent = "curl"; // this will tell the server to return the information as if the request was made by the linux "curl" command
 
