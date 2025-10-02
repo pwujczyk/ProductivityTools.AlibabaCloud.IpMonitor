@@ -82,10 +82,10 @@ namespace ProductivityTools.AlibabaCloud.App
                         ExceptionsCount++;
                         Console.WriteLine(ex.ToString());
 
-                        SendEmail(string.Format($"Some exception was thrown {ex.ToString()}"));
                         Thread.Sleep(TimeSpan.FromMinutes(1));
                         if (ExceptionsCount > 10)
                         {
+                            SendEmail(string.Format($"10 times exception was thrown in the row {ex.ToString()}"));
                             Thread.Sleep(TimeSpan.FromHours(1));
                         }
                     }
