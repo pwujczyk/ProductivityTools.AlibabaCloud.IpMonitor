@@ -37,7 +37,7 @@ jobs:
         shell: powershell
         
       - name: CopyFiles
-        run: xcopy ".\ProductivityTools.AlibabaCloud.NetCoreService\bin\Release\net9.0\publish\" "C:\Bin\Services\ProductivityTools.AlibabaCloud.NetCoreService\" /O /X /E /H /K /Y /I
+        run: robocopy ".\ProductivityTools.AlibabaCloud.NetCoreService\bin\Release\net9.0\publish" "C:\Bin\Services\ProductivityTools.AlibabaCloud.NetCoreService" /E /IS /IT
         shell: cmd
         
       - name: InstallService
